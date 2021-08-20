@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="schedule"
+            type="com.pnam.schedulemanager.model.database.domain.Schedule" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/schedule_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        app:cardCornerRadius="16dp"
+        android:transitionName="container">
+    <LinearLayout
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:minHeight="100dp"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{schedule.title}"
+            android:textColor="?attr/whiteLightBlackNightColor"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp"
+            android:transitionName="scheduleTitle"/>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{schedule.description}"
+            android:textColor="?attr/whiteLightBlackNightColor"
+            android:transitionName="scheduleDescription"/>
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

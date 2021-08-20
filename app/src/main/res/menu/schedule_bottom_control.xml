@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/image_choose"
+        android:title="@string/choose_image"
+        android:icon="@drawable/ic_more_vertical"
+        app:iconTint="?attr/blackLightWhiteNightColor"/>
+    <item
+        android:id="@+id/take_photo"
+        android:title="@string/take_photo_by_camera"
+        android:icon="@drawable/ic_more_vertical"
+        app:iconTint="?attr/blackLightWhiteNightColor"/>
+</menu>

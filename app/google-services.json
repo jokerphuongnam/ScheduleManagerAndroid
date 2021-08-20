@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "506482621471",
+    "project_id": "schedulesmanager-a19db",
+    "storage_bucket": "schedulesmanager-a19db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506482621471:android:d1f987ea105a9ea999a92a",
+        "android_client_info": {
+          "package_name": "com.pnam.schedulemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506482621471-qeftdhiof3298l5mqkbi0ln2v4ahc3i2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pnam.schedulemanager",
+            "certificate_hash": "afc37949aebc83deb4de1e15d892b881e0aa12fc"
+          }
+        },
+        {
+          "client_id": "506482621471-29sc3db0mha7bn8kgp2n8b5ltm4g60eo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArufIt7Mg20MrHN3AkIr_VjnOj7R59i5E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "506482621471-29sc3db0mha7bn8kgp2n8b5ltm4g60eo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "506482621471-cfcupconblkicle3jsktpvgr6q2qgjoc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.pnam.ScheduleManager"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

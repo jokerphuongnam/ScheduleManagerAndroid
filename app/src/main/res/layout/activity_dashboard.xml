@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="user"
+            type="com.pnam.schedulemanager.model.database.domain.User" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:fitsSystemWindows="true"
+        tools:context=".ui.main.MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:animateLayoutChanges="true"
+            android:background="?attr/textColor">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/whiteLightBlackNightColor"
+                app:contentScrim="@android:color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+                app:toolbarId="@+id/toolbar">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:text="@string/schedules"
+                        android:textAllCaps="true"
+                        android:textColor="@color/primary_color"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+                </androidx.appcompat.widget.Toolbar>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_navigation"
+            android:background="?attr/whiteLightBlackNightColor"
+            android:fillViewport="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/schedules_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:paddingBottom="?android:attr/actionBarSize">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/notes_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:clickable="true"
+            android:elevation="0.6dp"
+            android:focusable="true"
+            app:backgroundTint="?attr/whiteLightGreyNightColor"
+            app:borderWidth="0dp"
+            app:layout_anchor="@+id/tab_wrap"
+            app:layout_anchorGravity="right"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@color/primary_color" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/tab_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="?attr/whiteLightGreyNightColor"
+            android:gravity="center|start"
+            app:fabAlignmentMode="end"
+            app:fabAnimationMode="slide"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

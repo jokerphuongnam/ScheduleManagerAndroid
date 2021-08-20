@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="has_avatar"
+            type="Boolean" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/choose_gallery"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:scaleType="fitCenter"
+            android:text="@string/choose_gallery"
+            android:textAllCaps="false"
+            android:textColor="?attr/blackWhite"
+            app:icon="@drawable/ic_add"
+            app:iconPadding="16dp"
+            app:iconSize="?android:attr/actionBarSize"
+            app:iconTint="?attr/blackWhite" />
+
+        <Button
+            android:id="@+id/open_camera"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/open_camera"
+            android:textAllCaps="false"
+            android:textColor="?attr/blackWhite"
+            app:icon="@drawable/ic_photo_camera"
+            app:iconPadding="16dp"
+            app:iconSize="?android:attr/actionBarSize"
+            app:iconTint="?attr/blackWhite" />
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:layout_marginTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/delete_avatar"
+            android:textAllCaps="false"
+            android:textColor="?attr/blackWhite"
+            android:visibility="@{has_avatar ? View.VISIBLE : View.GONE}"
+            app:icon="@drawable/ic_trash"
+            app:iconPadding="16dp"
+            app:iconSize="?android:attr/actionBarSize"
+            app:iconTint="?attr/blackWhite" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+    </LinearLayout>
+</layout>

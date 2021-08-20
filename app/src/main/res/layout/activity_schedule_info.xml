@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="schedule"
+            type="com.pnam.schedulemanager.model.database.domain.Schedule" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.scheduleInfo.ScheduleInfoActivity">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/add_tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginBottom="?attr/actionBarSize"
+            android:background="?attr/whiteLightBlackNightColor"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:transitionName="container">
+
+                <LinearLayout
+                    android:id="@+id/background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:background="@android:color/transparent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:layout_margin="16dp">
+                        <EditText
+                            android:id="@+id/editTextTextPersonName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/title"
+                            android:inputType="text"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:text="@={schedule.title}"
+                            android:textColor="?attr/whiteLightBlackNightColor"
+                            android:textColorHighlight="?attr/greyColor"
+                            android:textCursorDrawable="@drawable/cursor_in_note"
+                            android:textSize="30sp"
+                            android:transitionName="scheduleTitle"/>
+
+                        <EditText
+                            android:id="@+id/editTextTextPersonName2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/detail"
+                            android:inputType="text|textMultiLine"
+                            android:paddingLeft="16dp"
+                            android:paddingTop="16dp"
+                            android:paddingRight="16dp"
+                            android:text="@={schedule.description}"
+                            android:textColor="?attr/whiteLightBlackNightColor"
+                            android:textColorHighlight="?attr/greyColor"
+                            android:textCursorDrawable="@drawable/cursor_in_note"
+                            android:textSize="24sp"
+                            android:transitionName="scheduleDescription" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/tasks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:padding="16dp" />
+
+                        <FrameLayout
+                            android:id="@+id/add_task"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="64dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="64dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/doter"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ripple">
+
+                                <ImageButton
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:background="@android:color/transparent"
+                                    android:drawableLeft="@drawable/ic_add"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:scaleType="fitXY"
+                                    app:elevation="0dp"
+                                    app:rippleColor="@android:color/transparent"
+                                    app:srcCompat="@drawable/ic_add"
+                                    app:tint="?attr/whiteLightBlackNightColor" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/add_new_task"
+                                    android:textColor="?attr/whiteLightBlackNightColor"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/images"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:padding="16dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/tab_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="?attr/whiteLightGreyNightColor"
+            app:buttonGravity="bottom|top"
+            app:fabAlignmentMode="end"
+            app:menu="@menu/schedule_bottom_control" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

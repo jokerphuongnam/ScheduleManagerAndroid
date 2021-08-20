@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="greyColor"/>
+    <attr name="textColor"/>
+    <attr name="tintColor"/>
+    <attr name="backgroundColors"/>
+    <attr name="blackLightWhiteNightColor"/>
+    <attr name="whiteLightBlackNightColor"/>
+    <attr name="whiteLightGreyNightColor"/>
+</resources>

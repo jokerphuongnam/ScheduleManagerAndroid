@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="user"
+            type="com.pnam.schedulemanager.model.database.domain.User" />
+    </data>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:fitsSystemWindows="true"
+        tools:context=".ui.main.MainActivity">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:background="?attr/textColor">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/action_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/whiteLightBlackNightColor"
+                app:contentScrim="@android:color/transparent"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
+                app:toolbarId="@+id/toolbar">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical|start"
+                        android:text="@string/schedules"
+                        android:textColor="@color/primary_color"
+                        android:textSize="36sp"
+                        android:textStyle="bold" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/circle_background_size"
+                        android:layout_height="@dimen/circle_background_size"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/circle_background"
+                        app:srcCompat="@drawable/ic_search"
+                        app:tint="?attr/tintColor" />
+
+                    <ImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="@dimen/circle_background_size"
+                        android:layout_height="@dimen/circle_background_size"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:background="@drawable/circle_background"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true"
+                        app:circle_image_from_url="@{user.avatar}"
+                        app:tint="?attr/tintColor" />
+                </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/main_view_pager"
+                android:background="?attr/whiteLightBlackNightColor"
+                app:tabIconTint="@color/color_tab"
+                app:tabIndicatorColor="@color/primary_color"
+                app:tabMode="auto"
+                app:tabTextColor="@color/color_tab">
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_home" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_user" />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:icon="@drawable/ic_notes" />
+            </com.google.android.material.tabs.TabLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottom_navigation"
+            android:background="?attr/whiteLightBlackNightColor"
+            android:fillViewport="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/main_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:clickable="true"
+            android:elevation="0.6dp"
+            android:focusable="true"
+            app:backgroundTint="?attr/whiteLightGreyNightColor"
+            app:borderWidth="0dp"
+            app:layout_anchor="@+id/tab_wrap"
+            app:layout_anchorGravity="right"
+            app:srcCompat="@drawable/ic_add"
+            app:tint="@color/primary_color" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/tab_wrap"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            android:background="?attr/whiteLightGreyNightColor"
+            android:gravity="center|start"
+            app:fabAlignmentMode="end"
+            app:fabAnimationMode="slide"
+            app:menu="@menu/main_control" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

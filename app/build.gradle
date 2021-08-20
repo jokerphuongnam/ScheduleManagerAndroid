@@ -1,0 +1,153 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        applicationId "com.pnam.schedulemanager"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildFeatures {
+        viewBinding true
+    }
+    defaultConfig {
+        multiDexEnabled true
+    }
+    defaultConfig {
+        vectorDrawables.useSupportLibrary = true
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.5.0'
+    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // Import the BoM for the Firebase platform
+//    implementation platform('com.google.firebase:firebase-bom:28.3.1')
+//    dependencies.implementation 'com.google.firebase:firebase-analytics-ktx'
+//    dependencies.implementation "com.google.android.gms:play-services-auth"
+
+    firebase()
+
+    coil()
+
+    coroutine()
+
+    ktx()
+
+    daggerHilt()
+
+    retrofit()
+
+    room()
+
+    dataStore()
+
+    viewPager2()
+}
+
+private void firebase(){
+    def auth_version = "7.2.0"
+    // [START gradle_firebase_ui_auth]
+    dependencies.implementation "com.firebaseui:firebase-ui-auth:$auth_version"
+}
+repositories {
+    mavenCentral()
+}
+
+private void coil(){
+    //glide
+    def coil_version = "1.2.0"
+    dependencies.implementation "io.coil-kt:coil:$coil_version"
+}
+
+private void coroutine(){
+    //coroutine
+    def coroutine_version = "1.3.9"
+    dependencies.implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
+}
+
+private void ktx(){
+    //ktx
+    def fragment_ktx_version = "1.3.1"
+    def core_ktx_version = "1.6.0"
+    def room_ktx_version = "2.3.0"
+    dependencies.implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
+    dependencies.implementation "androidx.core:core-ktx:$core_ktx_version"
+    dependencies.implementation "androidx.room:room-ktx:$room_ktx_version"
+}
+
+private void daggerHilt(){
+    //dagger hilt
+    def hilt_version = "2.37"
+    dependencies.implementation "com.google.dagger:hilt-android:$hilt_version"
+    dependencies.kapt "com.google.dagger:hilt-compiler:$hilt_version"
+}
+
+private void retrofit(){
+    // Retrofit & OkHttp
+    def retrofit_version = "1.6.0"
+    def okhttp_log_version = "4.9.0"
+    def gson_convert_version = "2.7.0"
+    def gson_version = "2.8.5"
+    dependencies.implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    dependencies.implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_log_version"
+    //gson converter adapter
+    dependencies.implementation "com.squareup.retrofit2:converter-gson:$gson_convert_version"
+    dependencies.implementation "com.google.code.gson:gson:$gson_version"
+}
+
+private void room(){
+    //room
+    def room_version = "2.3.0-alpha04"
+    dependencies.implementation "androidx.room:room-runtime:$room_version"
+    dependencies.kapt "androidx.room:room-compiler:$room_version"
+}
+
+private void dataStore(){
+    def data_store_version ="1.0.0-alpha08"
+    dependencies.implementation "androidx.datastore:datastore-preferences:$data_store_version"
+}
+
+private void viewPager2(){
+    def material_version = "1.1.0-beta01"
+    dependencies.implementation "com.google.android.material:material:$material_version"
+}

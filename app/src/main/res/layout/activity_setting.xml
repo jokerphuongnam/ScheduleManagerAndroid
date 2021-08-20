@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.pnam.schedulemanager.model.database.domain.User" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="24dp">
+
+                        <ImageView
+                            android:id="@+id/avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:adjustViewBounds="true"
+                            android:padding="32dp"
+                            android:scaleType="fitCenter"
+                            android:transitionName="avatar"
+                            app:image_from_url="@{user.avatar}" />
+
+                        <ImageView
+                            android:id="@+id/change_avatar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:background="@drawable/circle_background"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple"
+                            android:padding="8dp"
+                            app:srcCompat="@drawable/ic_photo_camera"
+                            app:tint="?attr/blackWhite" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:text="@{user.lastName}"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="?attr/blackLightWhiteNightColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/show_profile"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/show_profile"
+                android:textAllCaps="false"
+                android:textColor="?attr/blackLightWhiteNightColor" />
+
+            <Button
+                android:id="@+id/change_password"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/change_password"
+                android:textAllCaps="false"
+                android:textColor="?attr/blackLightWhiteNightColor" />
+
+            <Button
+                android:id="@+id/logout"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/log_out"
+                android:textAllCaps="false"
+                android:textColor="?attr/blackLightWhiteNightColor" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

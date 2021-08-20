@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.pnam.schedulemanager.model.database.domain.User" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ViewSwitcher
+            android:id="@+id/user_control"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageButton
+                    android:id="@+id/edit"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle_background"
+                    app:srcCompat="@drawable/ic_edit" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageButton
+                    android:id="@+id/cancel_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/circle_background"
+                    app:srcCompat="@drawable/ic_close" />
+
+                <ImageButton
+                    android:id="@+id/ok_btn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/circle_background"
+                    app:srcCompat="@drawable/ic_check" />
+            </LinearLayout>
+        </ViewSwitcher>
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:clickable="false"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            app:circle_image_from_url="@{user.avatar}"
+            app:srcCompat="@drawable/color_cursor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
+                    android:paddingRight="16dp"
+                    android:text="@string/first_name" />
+
+                <EditText
+                    android:id="@+id/first_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:gravity="center|start"
+                    android:inputType="text|textCapSentences"
+                    android:text="@={user.firstName}"
+                    android:textColor="?attr/blackLightWhiteNightColor"
+                    android:textColorHighlight="?attr/greyColor"
+                    android:textCursorDrawable="@drawable/cursor_background_white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
+                    android:paddingRight="16dp"
+                    android:text="@string/last_name" />
+
+                <EditText
+                    android:id="@+id/last_name"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:gravity="center|start"
+                    android:inputType="text|textCapSentences"
+                    android:text="@={user.lastName}"
+                    android:textColor="?attr/blackLightWhiteNightColor"
+                    android:textColorHighlight="?attr/greyColor"
+                    android:textCursorDrawable="@drawable/cursor_background_white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
+                    android:paddingRight="16dp"
+                    android:text="@string/birth_day" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/birth_day"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/transparent"
+                        android:layout_weight="7"
+                        android:enabled="false"
+                        android:gravity="center|start"
+                        android:inputType="none"
+                        android:text="@{user.birthDayString}"
+                        android:textColor="?attr/blackLightWhiteNightColor"
+                        android:textColorHighlight="?attr/greyColor"
+                        android:textCursorDrawable="@drawable/cursor_background_white" />
+
+                    <ImageButton
+                        android:id="@+id/calendar_choose"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:visibility="invisible"
+                        app:backgroundTint="@android:color/transparent"
+                        app:srcCompat="@drawable/ic_calendar"
+                        app:tint="?attr/blackLightWhiteNightColor" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

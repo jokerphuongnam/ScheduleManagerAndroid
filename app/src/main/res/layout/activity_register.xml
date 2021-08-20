@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.pnam.schedulemanager.model.database.domain.User" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="@string/detail_register" />
+
+                <ViewSwitcher
+                    android:id="@+id/image_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:animateLayoutChanges="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                            android:id="@+id/open_camera"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="64dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="64dp"
+                            android:background="@drawable/doter"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple">
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center">
+
+                                <ImageButton
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:adjustViewBounds="true"
+                                    android:background="@android:color/transparent"
+                                    android:drawableStart="@drawable/ic_add"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:scaleType="fitCenter"
+                                    app:elevation="0dp"
+                                    app:rippleColor="@android:color/transparent"
+                                    app:srcCompat="@drawable/ic_photo_camera"
+                                    app:tint="?attr/blackWhite" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/open_camera"
+                                    android:textColor="?attr/blackWhite"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+                        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                            android:id="@+id/add_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="64dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="64dp"
+                            android:background="@drawable/doter"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/ripple">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center">
+
+                                <ImageButton
+                                    android:layout_width="36dp"
+                                    android:layout_height="36dp"
+                                    android:adjustViewBounds="true"
+                                    android:background="@android:color/transparent"
+                                    android:drawableStart="@drawable/ic_add"
+                                    android:gravity="center"
+                                    android:padding="8dp"
+                                    android:scaleType="fitCenter"
+                                    app:elevation="0dp"
+                                    app:rippleColor="@android:color/transparent"
+                                    app:srcCompat="@drawable/ic_add"
+                                    app:tint="?attr/blackWhite" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="@string/choose_image"
+                                    android:textColor="?attr/blackWhite"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            android:animateLayoutChanges="true"
+                            app:cardCornerRadius="16dp">
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:scaleType="fitCenter" />
+                        </androidx.cardview.widget.CardView>
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="64dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="64dp"
+                            android:background="@drawable/doter">
+
+                            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                                android:id="@+id/delete_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/ripple"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center">
+
+                                    <ImageButton
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:adjustViewBounds="true"
+                                        android:background="@android:color/transparent"
+                                        android:drawableLeft="@drawable/ic_add"
+                                        android:gravity="center"
+                                        android:padding="8dp"
+                                        android:scaleType="fitCenter"
+                                        app:elevation="0dp"
+                                        app:rippleColor="@android:color/transparent"
+                                        app:srcCompat="@drawable/ic_trash"
+                                        app:tint="?attr/blackWhite" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="@string/delete_image"
+                                        android:textColor="?attr/blackWhite"
+                                        android:textSize="18sp" />
+                                </LinearLayout>
+                            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+                </ViewSwitcher>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/email"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:hintTextColor="@color/color_background_gray_yellow"
+                    app:passwordToggleTint="?attr/greyColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor">
+
+                        <requestFocus />
+                    </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:hintTextColor="@color/color_background_gray_yellow"
+                    app:passwordToggleTint="?attr/greyColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/password"
+                        android:inputType="text|textPassword"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/repeat_password"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:hintTextColor="@color/color_background_gray_yellow"
+                    app:passwordToggleTint="?attr/greyColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/repeat_password"
+                        android:inputType="text|textPassword"
+                        android:singleLine="true"
+                        android:textCursorDrawable="@drawable/color_cursor" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/first_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:hintTextColor="@color/color_background_gray_yellow"
+                    app:passwordToggleTint="?attr/greyColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/first_name_not_dot"
+                        android:inputType="text|textCapSentences"
+                        android:singleLine="true"
+                        android:text="@={user.firstName}"
+                        android:textCursorDrawable="@drawable/color_cursor" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/last_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    app:boxStrokeColor="@color/box_stroke_color"
+                    app:hintTextColor="@color/color_background_gray_yellow"
+                    app:passwordToggleTint="?attr/greyColor">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/last_name_not_dot"
+                        android:inputType="text|textCapSentences"
+                        android:singleLine="true"
+                        android:text="@={user.lastName}"
+                        android:textCursorDrawable="@drawable/color_cursor" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.4"
+                            android:gravity="center|start"
+                            android:paddingStart="16dp"
+                            android:singleLine="true"
+                            android:text="@string/birth_day"
+                            android:textSize="18sp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.6"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/birth_day"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="7"
+                                android:background="@android:color/transparent"
+                                android:enabled="false"
+                                android:gravity="center|start"
+                                android:inputType="none"
+                                android:text="@={user.birthDayString}"
+                                android:textColor="?attr/blackLightWhiteNightColor"
+                                android:textColorHighlight="?attr/greyColor"
+                                android:textCursorDrawable="@drawable/cursor_background_white" />
+
+                            <ImageButton
+                                android:id="@+id/calendar_choose"
+                                android:layout_width="36dp"
+                                android:layout_height="36dp"
+                                app:backgroundTint="@android:color/transparent"
+                                app:srcCompat="@drawable/ic_calendar"
+                                app:tint="?attr/blackLightWhiteNightColor" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/error_birthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:textColor="#FF0000"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:text="@string/gender"
+                        android:textSize="18sp" />
+
+                    <RadioGroup
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:checked="@={user.gender}"
+                            android:text="@string/male"
+                            android:buttonTint="@color/color_checked"/>
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="@string/female"
+                            android:buttonTint="@color/color_checked"/>
+                    </RadioGroup>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:backgroundTint="@color/yellow"
+                    android:text="@string/register"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>
