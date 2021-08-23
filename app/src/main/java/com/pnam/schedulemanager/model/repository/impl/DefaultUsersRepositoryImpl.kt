@@ -18,15 +18,8 @@ class DefaultUsersRepositoryImpl @Inject constructor(
     override val network: UsersNetwork,
     override val currentUser: CurrentUser
 ) : UsersRepository {
-    /**
-     * get current user single flowable first time or first time is complete will return error
-     * */
-    override suspend fun currentUser(): String = currentUser.findUid() ?: throw NotFoundException()
+    override suspend fun getCurrentUser(): String = currentUser.findUid() ?: throw NotFoundException()
 
-    /**
-     * when send login will receive 1 repose body if request code == 404 wrong username or password
-     * add username for user and save for currentUser (data store) and room (save cache)
-     * */
     override suspend fun login(
         email: String?,
         password: String?,
@@ -34,15 +27,19 @@ class DefaultUsersRepositoryImpl @Inject constructor(
         loginId: String?
     ): User {
         val response = network.login(email, password, userId, loginId)
-        if (response.code().equals(NOT_FOUND)) {
-            throw NotFoundException()
-        } else if (response.code().equals(SUCCESS)) {
-            val user = response.body()!!
-            local.insertUser(user)
-            currentUser.changeCurrentUser(user.userId)
-            return user
-        } else {
-            throw UnknownException()
+        when {
+            response.code().equals(NOT_FOUND) -> {
+                throw NotFoundException()
+            }
+            response.code().equals(SUCCESS) -> {
+                val user = response.body()!!
+                local.insertUser(user)
+                currentUser.changeCurrentUser(user.userId)
+                return user
+            }
+            else -> {
+                throw UnknownException()
+            }
         }
     }
 

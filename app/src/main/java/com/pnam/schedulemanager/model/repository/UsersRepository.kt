@@ -13,7 +13,7 @@ interface UsersRepository {
     val network: UsersNetwork
     val currentUser: CurrentUser
 
-    suspend fun currentUser(): String
+    suspend fun getCurrentUser(): String
 
     suspend fun login(
         email: String? = null,

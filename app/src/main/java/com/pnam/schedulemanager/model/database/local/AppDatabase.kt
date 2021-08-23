@@ -3,9 +3,7 @@ package com.pnam.schedulemanager.model.database.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.pnam.schedulemanager.model.database.domain.Schedule
-import com.pnam.schedulemanager.model.database.domain.Task
-import com.pnam.schedulemanager.model.database.domain.User
+import com.pnam.schedulemanager.model.database.domain.*
 import com.pnam.schedulemanager.utils.DataConverter
 import com.pnam.schedulemanager.model.database.local.impl.RoomSchedulesImpl
 import com.pnam.schedulemanager.model.database.local.impl.RoomUserImpl
@@ -14,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Database(
-    entities = [Schedule::class, User::class, Task::class],
+    entities = [Schedule::class, User::class, Task::class, Member::class, Media::class],
     version = DB_VER
 )
 @TypeConverters(DataConverter::class)

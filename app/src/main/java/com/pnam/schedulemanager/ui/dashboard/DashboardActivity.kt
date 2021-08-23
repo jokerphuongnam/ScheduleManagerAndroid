@@ -9,7 +9,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pnam.schedulemanager.R
@@ -22,7 +21,7 @@ import com.pnam.schedulemanager.ui.setting.SettingActivity
 import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
+import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -33,9 +32,13 @@ class DashboardActivity :
     }
 
     private val selectedItem: (Schedule, List<View>) -> Unit by lazy {
-        { note, sharedElements ->
-            intent.putExtra(ScheduleInfoActivity.NOTE, note.scheduleId)
-            addContent.launch(intent, makeSceneTransitionAnimation(*sharedElements.toTypedArray()))
+        { schedule, sharedElements ->
+            scheduleInfoLauncher.launch(
+                Intent(this@DashboardActivity, ScheduleInfoActivity::class.java).apply {
+                    putExtra(SCHEDULE, schedule)
+                },
+                makeSceneTransitionAnimation(*sharedElements.toTypedArray())
+            )
         }
     }
 
@@ -52,10 +55,10 @@ class DashboardActivity :
         }
     }
 
-    val addContent: ActivityResultLauncher<Intent> =
+    private val scheduleInfoLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                viewModel.scheduleLiveData
+                viewModel.getSchedules()
             }
         }
 
@@ -68,9 +71,7 @@ class DashboardActivity :
 
                     }
                     is Resource.Success -> {
-                        lifecycleScope.launch {
-                            schedulesAdapter.submitList(resource.data)
-                        }
+                        schedulesAdapter.submitList(resource.data.sortedWith(compareBy { it.scheduleTime }))
                         binding.schedulesRefresh.isRefreshing = false
                     }
                     is Resource.Error -> {
@@ -102,6 +103,7 @@ class DashboardActivity :
                             logout()
                         } else {
                             toolbar.setUser(resource.data)
+                            viewModel.getSchedules()
                         }
                     }
                     is Resource.Error -> {
@@ -115,7 +117,13 @@ class DashboardActivity :
     private fun setupAction() {
         binding.apply {
             addBtn.setOnClickListener {
-                addContent.launch(Intent(this@DashboardActivity, ScheduleInfoActivity::class.java))
+                scheduleInfoLauncher.launch(
+                    Intent(this@DashboardActivity, ScheduleInfoActivity::class.java).apply {
+
+                    }, makeSceneTransitionAnimation(
+                        it
+                    )
+                )
             }
             schedulesRefresh.setOnRefreshListener { viewModel.getSchedules() }
         }
@@ -179,12 +187,12 @@ class DashboardActivity :
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-
+                return if (newText.isEmpty()) {
+                    false
                 } else {
-
+                    searchView.clearFocus()
+                    true
                 }
-                return true
             }
         }
     }
@@ -240,5 +248,6 @@ class DashboardActivity :
 
     companion object {
         const val USER: String = "user"
+        const val SCHEDULE: String = "schedule"
     }
 }

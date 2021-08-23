@@ -16,6 +16,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityRegisterBinding
 import com.pnam.schedulemanager.ui.base.BaseActivity
+import com.pnam.schedulemanager.ui.base.uriToBitmap
 import com.pnam.schedulemanager.ui.login.LoginActivity
 import com.pnam.schedulemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,9 +43,9 @@ class RegisterActivity :
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 (result.data?.extras?.get("data") as Bitmap).apply {
-//                    viewModel.avatar = avatarthis
                     binding.image.setImageBitmap(this)
                     binding.imageLayout.displayedChild = 1
+                    viewModel.avatar = uriToBitmap(this)
                 }
             }
         }
@@ -73,7 +74,7 @@ class RegisterActivity :
 
     private val datePicker: DatePickerDialog
         get() {
-            val calendar: Calendar = viewModel.currentUser.value!!.birthDayCalendar
+            val calendar: Calendar = viewModel.currentUser.value!!.birthdayCalendar
             return DatePickerDialog(
                 this,
                 datePickerCallBack,

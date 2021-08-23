@@ -14,7 +14,7 @@ interface DashboardUseCase {
 
     suspend fun getUser(): User
 
-    suspend fun getSchedules(): MutableList<Schedule>
-    suspend fun deleteTask(vararg tasks: Task): Int
-    suspend fun deleteSchedule(schedule: Schedule): Long
+    suspend fun getSchedules(): List<Schedule>
+    suspend fun deleteTask(tasksId: String)
+    suspend fun deleteSchedule(schedule: Schedule)
 }

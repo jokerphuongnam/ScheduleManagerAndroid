@@ -18,8 +18,6 @@ abstract class BaseFragment<BD : ViewDataBinding, VM : BaseViewModel>(
 ) : Fragment(), BaseUI<BD, VM> {
     override var _binding: BD? = null
 
-    override var progressDialog: ProgressDialog? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -8,6 +8,7 @@ import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.usecase.ScheduleInfoUseCase
 import com.pnam.schedulemanager.throwable.NoConnectivityException
 import com.pnam.schedulemanager.ui.base.BaseViewModel
+import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,43 +19,67 @@ class ScheduleInfoViewModel @Inject constructor(
     private val useCase: ScheduleInfoUseCase
 ) : BaseViewModel() {
 
-    internal fun initNote(nid: String?, type: InsertType? = null) {
-        if (nid == null) {
-            _newSchedule.postValue(Schedule().apply {
-                type ?: return@apply
-                when (type) {
-                    InsertType.CHECK_BOX -> {
-                        tasks.apply {
-                            add(Task())
-                        }
-                    }
-                }
-            })
+    internal fun initSchedule(scheduleId: String?) {
+        if (scheduleId == null) {
+            _newSchedule.postValue(Schedule())
         } else {
-            viewModelScope.launch(Dispatchers.IO) {
-                try {
-                    val schedule = useCase.getSchedule(nid)
-                    _newSchedule.postValue(schedule)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+            getScheduleInfo(scheduleId)
+        }
+    }
+
+    internal fun getScheduleInfo(){
+        getScheduleInfo(_newSchedule.value!!.scheduleId)
+    }
+
+    private fun getScheduleInfo(scheduleId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val schedule = useCase.getScheduleInfo(scheduleId)
+                _newSchedule.postValue(schedule)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private val _newSchedule: MutableLiveData<Schedule> by lazy { MutableLiveData() }
+    internal val newSchedule: MutableLiveData<Schedule>
+        get() = _newSchedule
+
+    private val _updateSchedule: MutableLiveData<Resource<String>> by lazy { MutableLiveData() }
+    internal val updateSchedule: MutableLiveData<Resource<String>> get() = _updateSchedule
+
+    internal fun saveSchedule() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _updateSchedule.postValue(Resource.Loading())
+                val schedule = _newSchedule.value!!
+                if (schedule.scheduleId.isNotEmpty()) {
+                    useCase.updateSchedule(schedule)
+                    getScheduleInfo()
+                } else {
+                    getScheduleInfo(useCase.insertSchedule(schedule).scheduleId)
+                }
+                _updateSchedule.postValue(Resource.Success(schedule.scheduleId))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                when (e) {
+                    is NoConnectivityException -> {
+                        internetError.postValue("")
+                    }
+                    else -> {
+                        _updateSchedule.postValue(Resource.Error(e.message ?: ""))
+                    }
                 }
             }
         }
     }
 
-    private var isUpdate = false
-
-    private val _newSchedule: MutableLiveData<Schedule> by lazy { MutableLiveData<Schedule>() }
-    internal val newSchedule: MutableLiveData<Schedule>
-        get() = _newSchedule
-
-    internal val images: MutableList<Uri> by lazy { mutableListOf() }
-    internal val sounds: MutableList<Uri> by lazy { mutableListOf() }
-
-    internal fun saveNote() {
+    internal fun insertMedia(media: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                useCase.saveNote(_newSchedule.value!!, images, sounds, isUpdate = isUpdate)
+                val schedule = _newSchedule.value!!
+                useCase.addMultiMedia(schedule.scheduleId, mutableListOf(media))
             } catch (e: Exception) {
                 e.printStackTrace()
                 when (e) {
@@ -64,6 +89,40 @@ class ScheduleInfoViewModel @Inject constructor(
                     else -> {
                     }
                 }
+            }
+        }
+    }
+
+    internal fun deleteMedia() {
+        viewModelScope.launch(Dispatchers.IO) {
+
+        }
+    }
+
+    private val _toggleTaskObserver: MutableLiveData<Resource<String>> by lazy { MutableLiveData() }
+    internal val toggleTaskObserver: MutableLiveData<Resource<String>> get() = _toggleTaskObserver
+
+    internal fun toggleTask(task: Task, isFinish: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
+            _toggleTaskObserver.postValue(Resource.Loading())
+            try {
+                useCase.toggleTask(task, isFinish)
+                _toggleTaskObserver.postValue(Resource.Success(task.taskId))
+                getScheduleInfo()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _toggleTaskObserver.postValue(Resource.Error(e.message ?: ""))
+            }
+        }
+    }
+
+    internal fun deleteTask(taskId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                useCase.deleteTask(taskId)
+                getScheduleInfo(_newSchedule.value!!.scheduleId)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }

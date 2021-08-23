@@ -1,11 +1,8 @@
 package com.pnam.schedulemanager.model.database.domain
 
 import android.os.Parcelable
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
@@ -28,5 +25,8 @@ data class Task(
     @ColumnInfo(name = "finish_by") var finishBy: String? = null,
     @ColumnInfo(name = "create_by") var createBy: String = ""
 ) : Parcelable {
-    @ColumnInfo(name = "schedule_id") var scheduleId: String = ""
+    @ColumnInfo(name = "schedule_id")
+    var scheduleId: String = ""
+    @Ignore
+    var finishByMember: Member? = null
 }

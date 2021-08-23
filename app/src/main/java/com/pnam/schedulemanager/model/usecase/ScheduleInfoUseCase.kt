@@ -12,18 +12,19 @@ interface ScheduleInfoUseCase {
     val schedulesRepository: SchedulesRepository
     val usersRepository: UsersRepository
 
-    suspend fun deleteTask(
-        vararg tasks: Task
-    ): Int
+    suspend fun deleteTask(tasksId: String)
 
-    suspend fun deleteNote(schedule: Schedule): Long
+    suspend fun insertSchedule(schedule: Schedule): Schedule
 
-    suspend fun saveNote(
-        schedule: Schedule,
-        images: List<Uri>,
-        sounds: List<Uri>,
-        isUpdate: Boolean = false
-    ): Int
+    suspend fun updateSchedule(schedule: Schedule)
 
-    suspend fun getSchedule(nid: String): Schedule
+    suspend fun deleteSchedule(schedule: Schedule)
+
+    suspend fun getScheduleInfo(scheduleId: String): Schedule
+
+    suspend fun addMultiMedia(scheduleId: String, multiMedia: List<Uri>)
+
+    suspend fun deleteMedia(mediaId: String)
+
+    suspend fun toggleTask(task: Task, isFinish: Boolean)
 }

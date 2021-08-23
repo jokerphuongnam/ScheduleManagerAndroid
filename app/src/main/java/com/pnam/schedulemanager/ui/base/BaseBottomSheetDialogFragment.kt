@@ -20,7 +20,6 @@ abstract class BaseBottomSheetDialogFragment<BD : ViewDataBinding, VM : BaseView
     override var _binding: BD? = null
     protected lateinit var dialog: BottomSheetDialog
     protected lateinit var behavior: BottomSheetBehavior<*>
-    override var progressDialog: ProgressDialog? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {

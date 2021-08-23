@@ -12,8 +12,9 @@
         android:id="@+id/schedule_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_margin="8dp"
         app:cardCornerRadius="16dp"
+        android:layout_marginTop="8dp"
         android:transitionName="container">
     <LinearLayout
         android:id="@+id/background"
@@ -28,18 +29,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{schedule.title}"
-            android:textColor="?attr/whiteLightBlackNightColor"
+            android:textColor="?attr/blackLightWhiteNightColor"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:transitionName="scheduleTitle" />
+
+        <TextView
+            android:id="@+id/schedule_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:transitionName="scheduleTitle"/>
+            android:text="@{schedule.scheduleTimeString}"
+            android:textColor="?attr/blackLightWhiteNightColor"
+            android:transitionName="scheduleTime" />
+
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{schedule.description}"
-            android:textColor="?attr/whiteLightBlackNightColor"
-            android:transitionName="scheduleDescription"/>
+            android:textColor="?attr/blackLightWhiteNightColor"
+            android:transitionName="scheduleDescription" />
     </LinearLayout>
     </androidx.cardview.widget.CardView>
 </layout>

@@ -17,21 +17,21 @@ class DefaultDashboardUseCaseImpl @Inject constructor(
 
     override suspend fun getUser(): User {
         try {
-            return usersRepository.login(null, null, usersRepository.currentUser(), null)
+            return usersRepository.login(null, null, usersRepository.getCurrentUser(), null)
         } catch (e : NotFoundException) {
             throw NotLoginException()
         }
     }
 
-    override suspend fun getSchedules(): MutableList<Schedule> {
-       return schedulesRepository.getSchedules(usersRepository.currentUser())
+    override suspend fun getSchedules(): List<Schedule> {
+       return schedulesRepository.getSchedules(usersRepository.getCurrentUser())
     }
 
-    override suspend fun deleteTask(vararg tasks: Task): Int {
-        return schedulesRepository.deleteTask(*tasks)
+    override suspend fun deleteTask(tasksId: String) {
+        return schedulesRepository.deleteTask(tasksId)
     }
 
-    override suspend fun deleteSchedule(schedule: Schedule): Long {
+    override suspend fun deleteSchedule(schedule: Schedule) {
         return schedulesRepository.deleteSchedule(schedule)
     }
 }

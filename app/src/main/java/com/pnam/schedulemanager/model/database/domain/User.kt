@@ -21,7 +21,7 @@ data class User(
 ): Parcelable {
     constructor() : this("", "", "", null, true, 916678800000, mutableListOf())
 
-    val birthDayCalendar: Calendar
+    val birthdayCalendar: Calendar
         get() {
             val calendar: Calendar = Calendar.getInstance()
             calendar.timeZone = TimeZone.getDefault()
@@ -29,10 +29,10 @@ data class User(
             return calendar
         }
 
-    var birthDayString: String
+    var birthdayString: String
         get() {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            return sdf.format(birthDayCalendar.time)
+            return sdf.format(birthdayCalendar.time)
         }
         set(value) {
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

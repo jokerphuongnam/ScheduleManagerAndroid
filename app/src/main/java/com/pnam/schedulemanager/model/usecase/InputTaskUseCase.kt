@@ -1,16 +1,16 @@
 package com.pnam.schedulemanager.model.usecase
 
-import com.pnam.schedulemanager.model.database.domain.User
+import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
 import com.pnam.schedulemanager.model.repository.UsersRepository
 import javax.inject.Singleton
 
 @Singleton
-interface MainUseCase {
-    val schedulesRepository: SchedulesRepository
+interface InputTaskUseCase {
     val usersRepository: UsersRepository
+    val schedulesRepository: SchedulesRepository
 
-    suspend fun currentUser(): String
+    suspend fun insertTask(task: Task)
 
-    suspend fun getUser(): User
+    suspend fun updateTask(task: Task)
 }

@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -38,4 +41,8 @@ fun Activity.uriToBitmap(bitmap: Bitmap): Uri? {
         return Uri.fromFile(file)
     }
     return null
+}
+
+fun Fragment.showToastActivity(@StringRes message: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(requireActivity(), message, duration).show()
 }

@@ -7,11 +7,10 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Parcelize
 @Entity(
-    tableName = "multi_media",
+    tableName = "members",
     foreignKeys = [ForeignKey(
         entity = Schedule::class,
         parentColumns = arrayOf("schedule_id"),
@@ -20,19 +19,14 @@ import java.util.*
         onUpdate = ForeignKey.CASCADE
     )]
 )
-open class Media(
-    @PrimaryKey @ColumnInfo(name = "media_id") open var mediaId: String = "",
-    @ColumnInfo(name = "create_at") open var createAt: Long = Date().time,
-    @ColumnInfo(name = "create_by") open var createBy: String = "",
-    @ColumnInfo(name = "media_url") open var mediaUrl: String = ""
+class Member(
+    @PrimaryKey @ColumnInfo(name = "member_id") var memberId: String = "",
+    @ColumnInfo(name = "avatar") var avatar: String? = null,
+    @ColumnInfo(name = "join_at") var joinAt: Long = 0,
+    @ColumnInfo(name = "first_name") var firstName: String = "",
+    @ColumnInfo(name = "last_name") var lastName: String = "",
+    @ColumnInfo(name = "add_by_or_founder") var addbyOrFounder: String? = null
 ) : Parcelable {
     @ColumnInfo(name = "schedule_id")
     var scheduleId: String = ""
-
-    @ColumnInfo(name = "media_type")
-    var mediaType: MediaType = MediaType.IMAGE
-
-    enum class MediaType(val rawValue: Int) {
-        IMAGE(0), AUDIO(1), VIDEO(2);
-    }
 }

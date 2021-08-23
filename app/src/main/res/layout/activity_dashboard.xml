@@ -44,7 +44,7 @@
                         android:text="@string/schedules"
                         android:textAllCaps="true"
                         android:textColor="@color/primary_color"
-                        android:textSize="36sp"
+                        android:textSize="32sp"
                         android:textStyle="bold" />
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -58,18 +58,24 @@
             android:background="?attr/whiteLightBlackNightColor"
             android:fillViewport="true"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
-
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/schedules_refresh"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@android:color/transparent"
-                android:paddingBottom="?android:attr/actionBarSize">
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/notes_recycler"
+                android:animateLayoutChanges="true">
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/schedules_refresh"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:paddingBottom="?android:attr/actionBarSize">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/notes_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -80,6 +86,7 @@
             android:clickable="true"
             android:elevation="0.6dp"
             android:focusable="true"
+            android:transitionName="container"
             app:backgroundTint="?attr/whiteLightGreyNightColor"
             app:borderWidth="0dp"
             app:layout_anchor="@+id/tab_wrap"

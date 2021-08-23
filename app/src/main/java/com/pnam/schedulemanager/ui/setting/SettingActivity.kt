@@ -142,7 +142,7 @@ class SettingActivity :
         }
     }
 
-    override fun onContextItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
@@ -152,7 +152,9 @@ class SettingActivity :
     }
 
     private fun setupAppbar() {
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.apply {
+            title = ""
             setDisplayHomeAsUpEnabled(true)
         }
     }

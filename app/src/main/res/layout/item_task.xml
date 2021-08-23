@@ -3,6 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isEditMode"
+            type="Boolean" />
+
         <variable
             name="task"
             type="com.pnam.schedulemanager.model.database.domain.Task" />
@@ -11,35 +18,102 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
-        <CheckBox
-            android:id="@+id/is_finish"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:checked="@{task.finishBy != null}"
-            android:buttonTint="?attr/whiteLightBlackNightColor"
-            android:layout_weight="1"/>
+        android:orientation="vertical">
 
-        <EditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:inputType="text|textMultiLine"
-            android:text="@={task.detail}"
-            android:textColor="?attr/whiteLightBlackNightColor"
-            android:textColorHighlight="?attr/greyColor"
-            android:textCursorDrawable="@drawable/cursor_in_note"
-            android:textSize="18sp"
-            android:layout_weight="8"/>
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/delete_task_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            app:srcCompat="@drawable/ic_close"
-            app:tint="?attr/whiteLightBlackNightColor" />
+            <CheckBox
+                android:id="@+id/is_finish"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:buttonTint="?attr/blackLightWhiteNightColor"
+                android:checked="@{task.finishBy != null}" />
+
+            <TextView
+                android:id="@+id/describe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_weight="8"
+                android:background="@android:color/transparent"
+                android:text="@={task.detail}"
+                android:textColor="?attr/blackLightWhiteNightColor"
+                android:textColorHighlight="?attr/greyColor"
+                android:textCursorDrawable="@drawable/cursor_in_note"
+                android:textSize="18sp" />
+
+            <ImageButton
+                android:id="@+id/edit_task"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/circle_ripple"
+                android:padding="10dp"
+                android:layout_margin="8dp"
+                android:scaleType="fitCenter"
+                android:visibility="@{isEditMode? View.VISIBLE: View.GONE}"
+                app:srcCompat="@drawable/ic_edit"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageButton
+                android:id="@+id/delete_task_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/circle_background"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="@drawable/circle_ripple"
+                android:padding="10dp"
+                android:layout_margin="8dp"
+                android:scaleType="fitCenter"
+                android:visibility="@{isEditMode? View.VISIBLE: View.GONE}"
+                app:srcCompat="@drawable/ic_close"
+                app:tint="?attr/blackLightWhiteNightColor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{task.finishBy != null? View.VISIBLE: View.GONE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="?attr/blackLightWhiteNightColor"
+                android:text="@string/finish_by" />
+
+            <ImageView
+                circle_image_from_url="@{task.finishByMember == null? null: task.finishByMember.avatar}"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="8dp"
+                android:visibility="@{task.finishBy != null? View.VISIBLE: View.GONE}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="?attr/blackLightWhiteNightColor"
+                android:text="@{task.finishByMember != null ? task.finishByMember.firstName: ``}"
+                android:textColor="?attr/blackLightWhiteNightColor" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:buttonTint="?attr/blackLightWhiteNightColor"
+                android:text="@{task.finishByMember != null ? task.finishByMember.lastName: ``}"
+                android:textColor="?attr/blackLightWhiteNightColor" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

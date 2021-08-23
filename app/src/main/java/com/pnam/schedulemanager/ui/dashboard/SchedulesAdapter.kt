@@ -1,12 +1,11 @@
 package com.pnam.schedulemanager.ui.dashboard
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -37,16 +36,17 @@ class SchedulesAdapter(
 
         fun bind(scheduleOptional: Schedule?) {
             binding.schedule = scheduleOptional
-            scheduleOptional?.let { note ->
-                binding.background.setBackgroundColor(Color.parseColor("#${note.color}"))
+            scheduleOptional?.let { schedule ->
+                binding.background.setBackgroundColor(Color.parseColor(schedule.color))
                 binding.scheduleItem.apply {
                     setOnClickListener {
                         itemClick(
-                            note,
+                            schedule,
                             mutableListOf(
                                 binding.scheduleItem,
                                 binding.title,
-                                binding.description
+                                binding.description,
+                                binding.scheduleTime
                             )
                         )
                     }
@@ -56,7 +56,7 @@ class SchedulesAdapter(
                                 when (item.itemId) {
                                     R.id.edit -> {
                                         itemClick(
-                                            note,
+                                            schedule,
                                             mutableListOf(
                                                 binding.title,
                                                 binding.description
@@ -65,7 +65,7 @@ class SchedulesAdapter(
                                         true
                                     }
                                     R.id.delete -> {
-                                        deleteCallback(note)
+                                        deleteCallback(schedule)
                                         true
                                     }
                                     else -> false

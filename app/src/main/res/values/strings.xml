@@ -64,4 +64,15 @@
     <string name="upload_avatar">Upload avatar</string>
     <string name="review_avatar">Review avatar</string>
     <string name="upload_avatar_success">Upload avatar success</string>
+    <string name="waiting_login">Waiting login</string>
+    <string name="cancel">Cancel</string>
+    <string name="finish_by">Finish by</string>
+    <string name="title_cannot_be_empty">Title cannot be empty</string>
+    <string name="schedule_time">Schedule time</string>
+    <string name="has_error_when_save_schedule">Has error when shave schedule</string>
+    <string name="description_task">Description task</string>
+    <string name="create_new_schedule">Create new schedule</string>
+    <string name="edit_schedule">Edit schedule</string>
+    <string name="create_task_success">Create task success</string>
+    <string name="update_task_success">Update task success</string>
 </resources>

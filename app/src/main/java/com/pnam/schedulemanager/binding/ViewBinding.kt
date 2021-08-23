@@ -7,7 +7,7 @@ import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.pnam.schedulemanager.R
-import com.pnam.schedulemanager.ui.scheduleInfo.ImageAdapter
+import com.pnam.schedulemanager.ui.scheduleInfo.ImagesAdapter
 import com.pnam.schedulemanager.utils.RetrofitUtils.getMediaUrl
 
 @BindingAdapter("circle_image_from_url")
@@ -53,14 +53,14 @@ fun imageFromUrl(imageView: ImageView, url: String?) {
 }
 
 @BindingAdapter("image_from_url_or_uri")
-fun imageFromUrlOrUri(imageView: ImageView, image: ImageAdapter.ImageType<*>?) {
-    image ?: return
-    when (image) {
-        is ImageAdapter.ImageType.ImageUrl -> {
-            imageFromUrl(imageView, image.image)
+fun imageFromUrlOrUri(imageView: ImageView, images: ImagesAdapter.ImageType<*>?) {
+    images ?: return
+    when (images) {
+        is ImagesAdapter.ImageType.ImageUrl -> {
+            imageFromUrl(imageView, images.image)
         }
-        is ImageAdapter.ImageType.ImageBitMap -> {
-            imageView.setImageBitmap(image.image)
+        is ImagesAdapter.ImageType.ImageBitMap -> {
+            imageView.setImageBitmap(images.image)
         }
     }
     imageView.animate().cancel()

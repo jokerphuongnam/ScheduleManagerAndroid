@@ -21,11 +21,11 @@ class DashboardViewModel @Inject constructor(
     private val useCase: DashboardUseCase
 ) : BaseViewModel() {
 
-    private val _scheduleLiveData: MutableLiveData<Resource<MutableList<Schedule>>> by lazy {
-        MutableLiveData<Resource<MutableList<Schedule>>>()
+    private val _scheduleLiveData: MutableLiveData<Resource<List<Schedule>>> by lazy {
+        MutableLiveData<Resource<List<Schedule>>>()
     }
 
-    internal val scheduleLiveData: MutableLiveData<Resource<MutableList<Schedule>>>
+    internal val scheduleLiveData: MutableLiveData<Resource<List<Schedule>>>
         get() {
             return _scheduleLiveData
         }

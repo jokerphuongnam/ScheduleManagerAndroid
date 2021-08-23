@@ -1,5 +1,7 @@
 package com.pnam.schedulemanager.model.repository.impl
 
+import com.pnam.schedulemanager.model.database.domain.Media
+import com.pnam.schedulemanager.model.database.domain.Member
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
@@ -8,9 +10,11 @@ import com.pnam.schedulemanager.model.repository.SchedulesRepository
 import com.pnam.schedulemanager.throwable.BadRequest
 import com.pnam.schedulemanager.throwable.CannotSaveException
 import com.pnam.schedulemanager.throwable.NotFoundException
+import com.pnam.schedulemanager.throwable.UnknownException
 import com.pnam.schedulemanager.utils.RetrofitUtils.BAD_REQUEST
 import com.pnam.schedulemanager.utils.RetrofitUtils.INTERNAL_SERVER_ERROR
 import com.pnam.schedulemanager.utils.RetrofitUtils.NOT_FOUND
+import com.pnam.schedulemanager.utils.RetrofitUtils.SUCCESS
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.io.File
 import javax.inject.Inject
@@ -21,18 +25,10 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
     override val network: SchedulesNetwork
 ) : SchedulesRepository {
 
-    /**
-     * insert to network
-     * clear tasks by note
-     * insert tasks (list was changed) for note
-     * insert note
-     * */
     override suspend fun insertSchedule(
-        schedule: Schedule,
-        images: List<File>,
-        sounds: List<File>
-    ): Int {
-        val response = network.insertSchedule(schedule, images, sounds)
+        schedule: Schedule
+    ): Schedule {
+        val response = network.insertSchedule(schedule)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {
                 throw CannotSaveException()
@@ -42,31 +38,14 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
             }
             else -> {
                 val receiveSchedule: Schedule = response.body()!!
-                receiveSchedule.tasks.forEach { task: Task ->
-                    task.scheduleId = receiveSchedule.scheduleId
-                }
-                local.clearTasksBySchedule(receiveSchedule.scheduleId)
-                insertTasks(*receiveSchedule.tasks.toTypedArray())
-                local.insertSchedules(mutableListOf(receiveSchedule))
-                return 0
+                local.insertSchedules(receiveSchedule)
+                return receiveSchedule
             }
         }
     }
 
-    override suspend fun insertTasks(vararg tasks: Task): Int = 0
-
-    /**
-     * update to network
-     * clear task by note
-     * insert task (list was changed) for note
-     * update note
-     * */
-    override suspend fun updateSchedule(
-        schedule: Schedule,
-        images: List<File>,
-        sounds: List<File>
-    ): Int {
-        val response = network.updateSchedule(schedule, images, sounds)
+    override suspend fun updateSchedule(schedule: Schedule) {
+        val response = network.updateSchedule(schedule)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {
                 throw CannotSaveException()
@@ -75,25 +54,11 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
                 throw BadRequest()
             }
             else -> {
-                val receiveSchedule: Schedule = response.body()!!
-                receiveSchedule.tasks.forEach { task: Task ->
-                    task.scheduleId = receiveSchedule.scheduleId
-                }
-                local.clearTasksBySchedule(receiveSchedule.scheduleId)
-                insertTasks(*receiveSchedule.tasks.toTypedArray())
-                return local.updateSchedules(receiveSchedule)
             }
         }
     }
 
-
-    override suspend fun updateTask(vararg tasks: Task): Int = 0
-
-    /**
-     * delete note success in network request code != NOT_FOUND (404)
-     * delete note in local
-     * */
-    override suspend fun deleteSchedule(schedule: Schedule): Long {
+    override suspend fun deleteSchedule(schedule: Schedule) {
         val response = network.deleteSchedule(schedule.userId!!, schedule.scheduleId)
         when {
             response.code() == NOT_FOUND -> {
@@ -103,54 +68,231 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
                 throw BadRequest()
             }
             else -> {
-                local.deleteSchedules(schedule)
-                return 1
             }
         }
     }
 
-    override suspend fun deleteTask(vararg tasks: Task): Int {
-        local.deleteTasks(*tasks)
-        return tasks.size
-    }
-
-    override suspend fun clearTasksByNote(nid: String): Int = local.clearTasksBySchedule(nid)
-
-    /**
-     * get uid (is always non-null) in data store
-     * get count note in api and return Single<Pair<Long, Long>> (uid, count note)
-     * configure for Pager
-     * convert to flowable
-     * */
-    override suspend fun getSchedules(uid: String): MutableList<Schedule> {
-        val response = network.fetchSchedules(uid)
-        when {
-            response.code() == NOT_FOUND -> {
-                throw NotFoundException()
+    override suspend fun getSchedules(uid: String): List<Schedule> {
+        try {
+            val response = network.fetchSchedules(uid)
+            when {
+                response.code() == NOT_FOUND -> {
+                    throw NotFoundException()
+                }
+                response.code() == BAD_REQUEST -> {
+                    throw BadRequest()
+                }
+                response.code().equals(SUCCESS) -> {
+                    local.clearSchedulesByUserId(uid)
+                    val schedules = response.body()!!
+                    local.insertSchedules(*schedules.toTypedArray())
+                    return schedules
+                }
+                else -> {
+                    throw UnknownException()
+                }
             }
-            response.code() == BAD_REQUEST -> {
-                throw BadRequest()
-            }
-            else -> {
-                local.clearSchedulesByUserId(uid)
-                val schedules = response.body()!!
-                local.insertSchedules(schedules)
-                return schedules
-            }
+        } catch (e: Exception) {
+            return local.findScheduleByUserId(uid)
         }
     }
 
     override suspend fun getScheduleInfo(scheduleId: String): Schedule {
-        TODO("Not yet implemented")
+        try {
+            val response = network.fetchScheduleInfo(scheduleId)
+            when {
+                response.code() == NOT_FOUND -> {
+                    throw NotFoundException()
+                }
+                response.code() == BAD_REQUEST -> {
+                    throw BadRequest()
+                }
+                response.code().equals(SUCCESS) -> {
+                    val receiveSchedule: Schedule = response.body()!!
+                    receiveSchedule.members.forEach { member ->
+                        member.scheduleId = receiveSchedule.scheduleId
+                    }
+                    receiveSchedule.tasks.forEach { task ->
+                        task.scheduleId = receiveSchedule.scheduleId
+                        task.finishBy?.let { memberId ->
+                            task.finishByMember = receiveSchedule.members.first { member ->
+                                member.memberId == memberId
+                            }
+                        }
+                    }
+                    receiveSchedule.images.forEach { image ->
+                        image.scheduleId = receiveSchedule.scheduleId
+                        image.mediaType = Media.MediaType.IMAGE
+                    }
+                    receiveSchedule.audios.forEach { audio ->
+                        audio.scheduleId = receiveSchedule.scheduleId
+                        audio.mediaType = Media.MediaType.AUDIO
+                    }
+                    receiveSchedule.videos.forEach { video ->
+                        video.scheduleId = receiveSchedule.scheduleId
+                        video.mediaType = Media.MediaType.AUDIO
+                    }
+                    // tasks
+                    local.clearTasksBySchedule(receiveSchedule.scheduleId)
+                    local.insertTasks(*receiveSchedule.tasks.toTypedArray())
+
+                    // members
+                    local.clearMemberBySchedule(receiveSchedule.scheduleId)
+                    local.insertMembers(*receiveSchedule.members.toTypedArray())
+
+                    // multi media
+                    local.clearMultiMediaBySchedule(receiveSchedule.scheduleId)
+                    local.insertMultiMedia(*(receiveSchedule.images + receiveSchedule.videos + receiveSchedule.audios).toTypedArray())
+
+                    local.insertSchedules(receiveSchedule)
+                    return receiveSchedule
+                }
+                else -> {
+                    throw UnknownException()
+                }
+            }
+        } catch (e: Exception) {
+            return local.findSingleSchedule(scheduleId)
+        }
     }
 
-    override suspend fun getSingleSchedule(uid: String): Schedule =
-        local.findSingleSchedule(uid)
-
-    /**
-     * clear note of user in cache
-     * */
     override suspend fun clearSchedules(uid: String) {
         local.clearSchedulesByUserId(uid)
+    }
+
+    override suspend fun insertTasks(task: Task, userId: String) {
+        val response = network.insertTask(task, userId)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun updateTask(task: Task) {
+        val response = network.updateTask(task)
+        when {
+            response.code().equals(INTERNAL_SERVER_ERROR) -> {
+                throw CannotSaveException()
+            }
+            response.code().equals(BAD_REQUEST) -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun deleteTask(taskId: String) {
+        val response = network.deleteTask(taskId)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun addMember(member: Member) {
+        val response = network.addMember(member)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun leaveGroup(userId: String) {
+        val response = network.leaveGroup(userId)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>) {
+        val response = network.addMultiMedia(scheduleId, userId, multiMedia)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun deleteMedia(mediaId: String) {
+        val response = network.deleteMedia(mediaId)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun deleteMultiMedia(multiMediaId: List<String>) {
+        val response = network.deleteMultiMedia(multiMediaId)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
     }
 }

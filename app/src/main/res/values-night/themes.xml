@@ -1,31 +1,33 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.ScheduleManager" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-<!--        <item name="android:windowSharedElementEnterTransition">-->
-<!--            @transition/change_image_transform</item>-->
-<!--        <item name="android:windowSharedElementExitTransition">-->
-<!--            @transition/change_image_transform</item>-->
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- custom -->
-        <item name="greyColor">@color/dark_grey</item>
-        <item name="textColor">#000</item>
-        <item name="tintColor">#FFF</item>
-        <item name="blackLightWhiteNightColor">#FFF</item>
-        <item name="whiteLightBlackNightColor">#000</item>
-        <item name="whiteLightGreyNightColor">@color/dark_grey</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/whiteLightBlackNightColor</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <!-- Customize your theme here. -->
-        <item name="whiteBlack">@color/black</item>
-        <item name="blackWhite">@color/white</item>
-        <item name="grey">#E4E6EB</item>
+            <!--        <item name="android:windowSharedElementEnterTransition">-->
+            <!--            @transition/change_image_transform</item>-->
+            <!--        <item name="android:windowSharedElementExitTransition">-->
+            <!--            @transition/change_image_transform</item>-->
+            <!-- Primary brand color. -->
+            <item name="colorPrimary">@color/purple_200</item>
+            <item name="colorPrimaryVariant">@color/purple_700</item>
+            <item name="colorOnPrimary">@color/black</item>
+            <!-- Secondary brand color. -->
+            <item name="colorSecondary">@color/teal_200</item>
+            <item name="colorSecondaryVariant">@color/teal_200</item>
+            <item name="colorOnSecondary">@color/black</item>
+            <!-- custom -->
+            <item name="greyColor">@color/dark_grey</item>
+            <item name="textColor">#000</item>
+            <item name="tintColor">#FFF</item>
+            <item name="blackLightWhiteNightColor">#FFF</item>
+            <item name="whiteLightBlackNightColor">#000</item>
+            <item name="whiteLightGreyNightColor">@color/dark_grey</item>
+            <!-- Status bar color. -->
+            <item name="android:statusBarColor" tools:targetApi="l">
+                    ?attr/whiteLightBlackNightColor
+            </item>
+            <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+            <!-- Customize your theme here. -->
+            <item name="whiteBlack">@color/black</item>
+            <item name="blackWhite">@color/white</item>
+            <item name="grey">#E4E6EB</item>
     </style>
 </resources>

@@ -59,7 +59,7 @@
                             android:background="@drawable/doter"
                             android:clickable="true"
                             android:focusable="true"
-                            android:foreground="@drawable/ripple">
+                            android:foreground="@drawable/circle_ripple">
 
 
                             <LinearLayout
@@ -102,7 +102,7 @@
                             android:background="@drawable/doter"
                             android:clickable="true"
                             android:focusable="true"
-                            android:foreground="@drawable/ripple">
+                            android:foreground="@drawable/circle_ripple">
 
                             <LinearLayout
                                 android:layout_width="wrap_content"
@@ -167,7 +167,7 @@
                                 android:id="@+id/delete_image"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:background="@drawable/ripple"
+                                android:background="@drawable/circle_ripple"
                                 android:clickable="true"
                                 android:focusable="true">
 
@@ -341,7 +341,7 @@
                                 android:enabled="false"
                                 android:gravity="center|start"
                                 android:inputType="none"
-                                android:text="@={user.birthDayString}"
+                                android:text="@={user.birthdayString}"
                                 android:textColor="?attr/blackLightWhiteNightColor"
                                 android:textColorHighlight="?attr/greyColor"
                                 android:textCursorDrawable="@drawable/cursor_background_white" />

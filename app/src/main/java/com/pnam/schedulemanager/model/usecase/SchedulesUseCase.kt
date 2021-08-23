@@ -11,9 +11,9 @@ interface SchedulesUseCase {
     val schedulesRepository: SchedulesRepository
     val usersRepository: UsersRepository
 
-    suspend fun getSchedules(): MutableList<Schedule>
+    suspend fun getSchedules(): List<Schedule>
 
-    suspend fun deleteTask(vararg tasks: Task): Int
+    suspend fun deleteTask(taskId: String)
 
-    suspend fun deleteSchedule(schedule: Schedule): Long
+    suspend fun deleteSchedule(schedule: Schedule)
 }

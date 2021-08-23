@@ -13,20 +13,15 @@ class DefaultSchedulesUseCaseImpl @Inject constructor(
 ) : SchedulesUseCase {
 
 
-    override suspend fun getSchedules(): MutableList<Schedule> =
-        usersRepository.currentUser().let { uid ->
+    override suspend fun getSchedules(): List<Schedule> =
+        usersRepository.getCurrentUser().let { uid ->
             schedulesRepository.getSchedules(uid)
         }
 
-    override suspend fun deleteTask(vararg tasks: Task): Int =
-        schedulesRepository.deleteTask(*tasks)
+    override suspend fun deleteTask(taskId: String) =
+        schedulesRepository.deleteTask(taskId)
 
-    /**
-     * get id note from user repository
-     * set uid for note
-     * delete note
-     * */
-    override suspend fun deleteSchedule(schedule: Schedule): Long = usersRepository.currentUser().let { userId ->
+    override suspend fun deleteSchedule(schedule: Schedule) = usersRepository.getCurrentUser().let { userId ->
         schedule.userId = userId
         schedulesRepository.deleteSchedule(schedule)
     }

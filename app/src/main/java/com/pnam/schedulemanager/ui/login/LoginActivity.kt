@@ -54,7 +54,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(R.layou
             when (resource) {
                 is Resource.Loading -> {
                     binding.loginError.visibility = View.INVISIBLE
-                    showProgressDialog()
+                    showProgressDialog(R.string.waiting_login)
                 }
                 is Resource.Success -> {
                     val intent: Intent = Intent(this, DashboardActivity::class.java).apply {

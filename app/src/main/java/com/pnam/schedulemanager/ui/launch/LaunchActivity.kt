@@ -6,7 +6,6 @@ import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityLaunchBinding
 import com.pnam.schedulemanager.ui.base.BaseActivity
 import com.pnam.schedulemanager.ui.dashboard.DashboardActivity
-import com.pnam.schedulemanager.ui.main.MainActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi

@@ -20,8 +20,6 @@ abstract class BaseActivity<BD : ViewDataBinding, VM : BaseViewModel>(
 
     override var _binding: BD? = null
 
-    override var progressDialog: ProgressDialog? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = DataBindingUtil.setContentView<BD>(this, layoutRes).apply {

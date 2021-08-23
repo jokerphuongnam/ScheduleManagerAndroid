@@ -10,10 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ItemImageBinding
 
-class ImageAdapter(
+class ImagesAdapter(
     private val changeSizeData: (Int) -> Unit
-) :
-    ListAdapter<ImageAdapter.ImageType<*>, ImageAdapter.ImageViewHolder>(DIFF_CALLBACK) {
+) : ListAdapter<ImagesAdapter.ImageType<*>, ImagesAdapter.ImageViewHolder>(DIFF_CALLBACK) {
 
 
     private var _images: MutableList<ImageType<*>> = mutableListOf()

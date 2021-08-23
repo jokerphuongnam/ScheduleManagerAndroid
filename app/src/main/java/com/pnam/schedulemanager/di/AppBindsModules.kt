@@ -50,8 +50,6 @@ abstract class AppBindsModules {
     abstract fun getUserRepository(repository: DefaultUsersRepositoryImpl): UsersRepository
 
     //use case
-    @Binds
-    abstract fun getMainUseCase(useCase: DefaultMainUseCaseImpl): MainUseCase
 
     @Binds
     abstract fun getLoginUseCase(useCase: DefaultLoginUseCaseImpl): LoginUseCase
@@ -88,4 +86,7 @@ abstract class AppBindsModules {
 
     @Binds
     abstract fun getReviewAvatarUseCase(useCase: DefaultReviewAvatarUseCaseImpl): ReviewAvatarUseCase
+
+    @Binds
+    abstract fun getInputTaskUseCase(useCase: DefaultInputTaskUseCaseImpl): InputTaskUseCase
 }

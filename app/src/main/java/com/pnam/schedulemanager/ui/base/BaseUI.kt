@@ -45,7 +45,7 @@ interface BaseUI<BD : ViewDataBinding, VM : BaseViewModel> {
             }
             else -> throw Exception("can inherit by a Fragment or Activity")
         }
-        Toast.makeText(context, context.getString(message), duration).show()
+        Toast.makeText(context, message, duration).show()
     }
 
     fun showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {
@@ -136,27 +136,42 @@ interface BaseUI<BD : ViewDataBinding, VM : BaseViewModel> {
         )
     }
 
-    var progressDialog: ProgressDialog?
-
-    fun showProgressDialog() {
-        progressDialog = ProgressDialog(
-            when (this) {
-                is Fragment -> {
-                    requireActivity()
-                }
-                is AppCompatActivity -> {
-                    this
-                }
-                else -> throw Exception("can inherit by a Fragment or Activity")
+    fun showProgressDialog(@StringRes message: Int? = null) {
+        val context = when (this) {
+            is Fragment -> {
+                requireActivity()
             }
-        )
-        progressDialog?.setCancelable(false)
-        progressDialog?.setCanceledOnTouchOutside(false)
-        progressDialog?.show()
+            is AppCompatActivity -> {
+                this
+            }
+            else -> throw Exception("can inherit by a Fragment or Activity")
+        }
+        progressDialog = ProgressDialog(context)
+        progressDialog?.let { dialog ->
+            dialog.setCancelable(false)
+            dialog.setCanceledOnTouchOutside(false)
+            message?.let {
+                dialog.setMessage(context.getString(it))
+            }
+            dialog.show()
+        }
     }
 
     fun dismissProgressDialog() {
+        progressDialog?.setCancelable(true)
+        progressDialog?.setCanceledOnTouchOutside(true)
+        progressDialog?.cancel()
         progressDialog?.dismiss()
         progressDialog = null
+    }
+
+    fun List<View>.setOnClickListener(l: View.OnClickListener) {
+        forEach {
+            it.setOnClickListener(l)
+        }
+    }
+
+    companion object {
+        private var progressDialog: ProgressDialog? = null
     }
 }
