@@ -237,11 +237,12 @@ class DashboardActivity :
         initNotesRecycler()
         setupViewMode()
         setupAction()
+        viewModel.getUser()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getUser()
+        viewModel.getSchedules()
     }
 
     override val viewModel: DashboardViewModel by viewModels()

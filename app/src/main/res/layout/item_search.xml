@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="search"
+            type="com.pnam.schedulemanager.model.database.domain.Search" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="@drawable/square_ripple"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@{search.searchId == null ? @drawable/ic_search: @drawable/ic_history}" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:gravity="center|start"
+            android:text="@{search.word}"
+            android:textColor="#000000" />
+
+        <ImageButton
+            android:id="@+id/delete_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_trash"
+            android:visibility="@{search.searchId == null? View.GONE: View.VISIBLE}" />
+    </LinearLayout>
+</layout>

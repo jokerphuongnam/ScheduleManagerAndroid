@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.database.network.impl
 
+import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.network.UsersNetwork
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -84,6 +85,18 @@ class UsersRetrofitServiceImpl @Inject constructor(
         return service.forgotPassword(email)
     }
 
+    override suspend fun searchUser(
+        userId: String,
+        searchWord: String,
+        isInsert: Boolean?
+    ): Response<List<Search>> {
+        return service.searchUser(userId, searchWord, isInsert)
+    }
+
+    override suspend fun deleteSearch(searchId: String?, userId: String?): Response<Unit> {
+        return service.deleteSearch(searchId, userId)
+    }
+
     interface Service {
         @GET("${PATH}login")
         suspend fun login(
@@ -136,6 +149,21 @@ class UsersRetrofitServiceImpl @Inject constructor(
         @FormUrlEncoded
         @PUT("${PATH}forgotpassword")
         suspend fun forgotPassword(@Field("email") email: String): Response<Unit>
+
+        @FormUrlEncoded
+        @POST("${PATH}search")
+        suspend fun searchUser(
+            @Field("userId") userId: String,
+            @Field("searchWord")  searchWord: String,
+            @Field("isInsert") isInsert: Boolean? = null
+        ): Response<List<Search>>
+
+        @FormUrlEncoded
+        @DELETE("${PATH}deleteSearch")
+        suspend fun deleteSearch(
+            @Field("searchId") searchId: String?,
+            @Field("userId") userId: String?
+        ): Response<Unit>
     }
 
     private companion object {

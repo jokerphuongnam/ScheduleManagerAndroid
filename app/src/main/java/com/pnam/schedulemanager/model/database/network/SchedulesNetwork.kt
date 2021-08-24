@@ -1,6 +1,5 @@
 package com.pnam.schedulemanager.model.database.network
 
-import com.pnam.schedulemanager.model.database.domain.Member
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import retrofit2.Response
@@ -38,9 +37,13 @@ interface SchedulesNetwork {
 
     suspend fun deleteTask(taskId: String): Response<Unit>
 
-    suspend fun addMember(member: Member): Response<Unit>
+    suspend fun addMember(
+        userIdBeAdded: String,
+        scheduleId: String,
+        userIdAdd: String
+    ): Response<Unit>
 
-    suspend fun leaveGroup(userId: String): Response<Unit>
+    suspend fun leaveGroup(scheduleId: String, userId: String): Response<Unit>
 
     suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>): Response<Unit>
 

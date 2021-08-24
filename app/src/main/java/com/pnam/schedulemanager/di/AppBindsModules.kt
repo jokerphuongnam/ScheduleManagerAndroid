@@ -89,4 +89,7 @@ abstract class AppBindsModules {
 
     @Binds
     abstract fun getInputTaskUseCase(useCase: DefaultInputTaskUseCaseImpl): InputTaskUseCase
+
+    @Binds
+    abstract fun getMembersUseCase(useCase: DefaultMembersUseCaseImpl): MembersUseCase
 }

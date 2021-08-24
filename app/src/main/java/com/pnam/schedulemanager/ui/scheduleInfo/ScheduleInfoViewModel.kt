@@ -99,19 +99,19 @@ class ScheduleInfoViewModel @Inject constructor(
         }
     }
 
-    private val _toggleTaskObserver: MutableLiveData<Resource<String>> by lazy { MutableLiveData() }
-    internal val toggleTaskObserver: MutableLiveData<Resource<String>> get() = _toggleTaskObserver
+    private val _toggleTaskLiveData: MutableLiveData<Resource<String>> by lazy { MutableLiveData() }
+    internal val toggleTaskLiveData: MutableLiveData<Resource<String>> get() = _toggleTaskLiveData
 
     internal fun toggleTask(task: Task, isFinish: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            _toggleTaskObserver.postValue(Resource.Loading())
+            _toggleTaskLiveData.postValue(Resource.Loading())
             try {
                 useCase.toggleTask(task, isFinish)
-                _toggleTaskObserver.postValue(Resource.Success(task.taskId))
+                _toggleTaskLiveData.postValue(Resource.Success(task.taskId))
                 getScheduleInfo()
             } catch (e: Exception) {
                 e.printStackTrace()
-                _toggleTaskObserver.postValue(Resource.Error(e.message ?: ""))
+                _toggleTaskLiveData.postValue(Resource.Error(e.message ?: ""))
             }
         }
     }

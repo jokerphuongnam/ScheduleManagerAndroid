@@ -1,6 +1,5 @@
 package com.pnam.schedulemanager.model.database.network.impl
 
-import com.pnam.schedulemanager.model.database.domain.Member
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
@@ -78,12 +77,16 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
         return service.deleteTask(taskId)
     }
 
-    override suspend fun addMember(member: Member): Response<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun addMember(
+        userIdBeAdded: String,
+        scheduleId: String,
+        userIdAdd: String
+    ): Response<Unit> {
+        return service.addMember(userIdBeAdded, scheduleId, userIdAdd)
     }
 
-    override suspend fun leaveGroup(userId: String): Response<Unit> {
-        TODO("Not yet implemented")
+    override suspend fun leaveGroup(scheduleId: String, userId: String): Response<Unit> {
+        return service.leaveGroup(scheduleId, userId)
     }
 
     override suspend fun addMultiMedia(
@@ -124,7 +127,7 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
             @Field("color") color: String
         ): Response<Schedule>
 
-        @GET("${SCHEDULES}delete/{scheduleId}")
+        @DELETE("${SCHEDULES}delete/{scheduleId}")
         suspend fun deleteScheduleInfo(@Path("scheduleId") scheduleId: String): Response<Schedule>
 
         @GET("${SCHEDULES}scheduleinfo/{scheduleId}")
@@ -152,13 +155,24 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
         @DELETE("${TASKS}deletetask/{taskId}")
         suspend fun deleteTask(@Path("taskId") taskId: String): Response<Unit>
 
-//        suspend fun addMember(): Response<Unit>
-//
-//        suspend fun leaveGroup(): Response<Unit>
+        @FormUrlEncoded
+        @POST("${MEMBERS}addmember")
+        suspend fun addMember(
+            @Field("userIdBeAdded") userIdBeAdded: String,
+            @Field("scheduleId") scheduleId: String,
+            @Field("userIdAdd") userIdAdd: String
+        ): Response<Unit>
+
+        @DELETE("${SCHEDULES}{scheduleId}/member/leavegroup/{userId}")
+        suspend fun leaveGroup(
+            @Path("scheduleId")scheduleId: String,
+            @Path("userId")userId: String
+        ): Response<Unit>
     }
 
     private companion object {
         private const val SCHEDULES = "schedule/"
         private const val TASKS = "${SCHEDULES}task/"
+        private const val MEMBERS = "${SCHEDULES}member/"
     }
 }

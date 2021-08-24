@@ -3,21 +3,51 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="com.pnam.schedulemanager.ui.scheduleInfo.members.ShowTypeMember" />
+
+        <variable
+            name="type"
+            type="com.pnam.schedulemanager.ui.scheduleInfo.members.ShowTypeMember" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize">
+            android:layout_height="match_parent"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/members"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:visibility="@{type == ShowTypeMember.MEMBERS? View.VISIBLE: View.GONE}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:visibility="@{type == ShowTypeMember.SEARCH? View.VISIBLE: View.GONE}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_results"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:visibility="@{type == ShowTypeMember.SEARCH_RESULTS? View.VISIBLE: View.GONE}" />
         </RelativeLayout>
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:hint="Search a member"/>
     </LinearLayout>
 </layout>

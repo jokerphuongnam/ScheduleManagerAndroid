@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/dialog_rounded_background"
         android:paddingHorizontal="32dp"
         android:paddingTop="32dp"
         android:paddingBottom="8dp">

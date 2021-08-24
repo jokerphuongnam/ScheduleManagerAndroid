@@ -14,7 +14,6 @@ import com.pnam.schedulemanager.databinding.ItemColorBinding
 class ColorsAdapter(
     private val selectedColorHandle: (ColorElement) -> Unit
 ) : ListAdapter<ColorsAdapter.ColorElement, ColorsAdapter.ColorViewHolder>(DIFF_CALLBACK) {
-
     init {
         submitList(ColorElement.values().toMutableList())
     }

@@ -1,6 +1,5 @@
 package com.pnam.schedulemanager.model.repository
 
-import com.pnam.schedulemanager.model.database.domain.Member
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
@@ -31,9 +30,9 @@ interface SchedulesRepository {
 
     suspend fun deleteTask(taskId: String)
 
-    suspend fun addMember(member: Member)
+    suspend fun addMember(userIdBeAdded: String, scheduleId: String, userIdAdd: String)
 
-    suspend fun leaveGroup(userId: String)
+    suspend fun leaveGroup(scheduleId: String, userId: String)
 
     suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>)
 

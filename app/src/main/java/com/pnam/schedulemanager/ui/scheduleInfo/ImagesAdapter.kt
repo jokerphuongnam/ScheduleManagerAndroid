@@ -13,8 +13,6 @@ import com.pnam.schedulemanager.databinding.ItemImageBinding
 class ImagesAdapter(
     private val changeSizeData: (Int) -> Unit
 ) : ListAdapter<ImagesAdapter.ImageType<*>, ImagesAdapter.ImageViewHolder>(DIFF_CALLBACK) {
-
-
     private var _images: MutableList<ImageType<*>> = mutableListOf()
 
     init {

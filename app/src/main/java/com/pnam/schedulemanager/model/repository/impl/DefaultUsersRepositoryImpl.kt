@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.repository.impl
 
+import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.local.CurrentUser
 import com.pnam.schedulemanager.model.database.local.impl.UserLocal
@@ -157,6 +158,41 @@ class DefaultUsersRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             return@let local.findSingleUser(it!!)
+        }
+    }
+
+    override suspend fun searchUser(
+        userId: String,
+        searchWord: String,
+        isInsert: Boolean?
+    ): List<Search> {
+        val response = network.searchUser(userId, searchWord, isInsert)
+        val responseCode = response.code()
+        when {
+            responseCode.equals(SUCCESS) -> {
+                return response.body()!!
+            }
+            responseCode.equals(CONFLICT) -> {
+                throw NotFoundException()
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun deleteSearch(searchId: String?, userId: String?) {
+        val response = network.deleteSearch(searchId, userId)
+        val responseCode = response.code()
+        when {
+            responseCode.equals(SUCCESS) -> {
+            }
+            responseCode.equals(CONFLICT) -> {
+                throw NotFoundException()
+            }
+            else -> {
+                throw UnknownException()
+            }
         }
     }
 }

@@ -1,7 +1,6 @@
 package com.pnam.schedulemanager.model.repository.impl
 
 import com.pnam.schedulemanager.model.database.domain.Media
-import com.pnam.schedulemanager.model.database.domain.Member
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
@@ -211,8 +210,8 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addMember(member: Member) {
-        val response = network.addMember(member)
+    override suspend fun addMember(userIdBeAdded: String, scheduleId: String, userIdAdd: String) {
+        val response = network.addMember(userIdBeAdded, scheduleId, userIdAdd)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {
                 throw CannotSaveException()
@@ -228,8 +227,8 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun leaveGroup(userId: String) {
-        val response = network.leaveGroup(userId)
+    override suspend fun leaveGroup(scheduleId: String, userId: String) {
+        val response = network.leaveGroup(scheduleId, userId)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {
                 throw CannotSaveException()

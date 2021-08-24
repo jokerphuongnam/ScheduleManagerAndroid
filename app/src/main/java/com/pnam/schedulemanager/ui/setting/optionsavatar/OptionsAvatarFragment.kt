@@ -4,9 +4,11 @@ import android.content.Intent
 import android.provider.MediaStore
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.FragmentOptionsAvatarBinding
 import com.pnam.schedulemanager.ui.base.BaseBottomSheetDialogFragment
+import com.pnam.schedulemanager.ui.base.showToastActivity
 import com.pnam.schedulemanager.ui.setting.SettingActivity
 import com.pnam.schedulemanager.ui.setting.SettingViewModel
 import com.pnam.schedulemanager.utils.Resource
@@ -28,11 +30,12 @@ class OptionsAvatarFragment :
 
     private fun setupViewModel() {
         viewModel.apply {
-            deleteAvatarLiveData.observe {
-                when (it) {
+            deleteAvatarLiveData.observe { resource ->
+                when (resource) {
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
+                        showToastActivity(R.string.delete_avatar_success)
                         dismiss()
                     }
                     is Resource.Error -> {

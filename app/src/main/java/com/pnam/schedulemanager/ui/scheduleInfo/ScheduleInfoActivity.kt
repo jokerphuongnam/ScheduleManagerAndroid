@@ -282,7 +282,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     }
                 }
             }
-            toggleTaskObserver.observe {
+            toggleTaskLiveData.observe {
                 tasksInfoAdapter.submitList(
                     viewModel.newSchedule.value?.tasks?.toMutableList() ?: emptyList()
                 )

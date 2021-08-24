@@ -9,6 +9,7 @@ import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.FragmentReviewAvatarBinding
 import com.pnam.schedulemanager.ui.base.BaseBottomSheetDialogFragment
 import com.pnam.schedulemanager.ui.base.BaseFragment
+import com.pnam.schedulemanager.ui.base.showToastActivity
 import com.pnam.schedulemanager.ui.base.uriToBitmap
 import com.pnam.schedulemanager.ui.setting.SettingActivity
 import com.pnam.schedulemanager.ui.setting.SettingViewModel
@@ -41,7 +42,7 @@ class ReviewAvatarFragment :
                     is Resource.Loading -> {
                     }
                     is Resource.Success -> {
-                        showToast(R.string.upload_avatar_success)
+                        showToastActivity(R.string.upload_avatar_success)
                         dismiss()
                     }
                     is Resource.Error -> {

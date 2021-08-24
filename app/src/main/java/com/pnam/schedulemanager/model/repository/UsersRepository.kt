@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.repository
 
+import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.local.CurrentUser
 import com.pnam.schedulemanager.model.database.local.impl.UserLocal
@@ -48,4 +49,15 @@ interface UsersRepository {
     ): User
 
     suspend fun getUser(): User
+
+    suspend fun searchUser(
+        userId: String,
+        searchWord: String,
+        isInsert: Boolean? = null
+    ): List<Search>
+
+    suspend fun deleteSearch(
+        searchId: String?,
+        userId: String?
+    )
 }

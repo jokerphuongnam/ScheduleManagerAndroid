@@ -75,4 +75,6 @@
     <string name="edit_schedule">Edit schedule</string>
     <string name="create_task_success">Create task success</string>
     <string name="update_task_success">Update task success</string>
+    <string name="delete_avatar_success">Delete avatar success</string>
+    <string name="ok">Ok</string>
 </resources>

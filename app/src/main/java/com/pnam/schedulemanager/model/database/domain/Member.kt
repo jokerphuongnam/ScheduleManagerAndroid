@@ -25,8 +25,10 @@ class Member(
     @ColumnInfo(name = "join_at") var joinAt: Long = 0,
     @ColumnInfo(name = "first_name") var firstName: String = "",
     @ColumnInfo(name = "last_name") var lastName: String = "",
-    @ColumnInfo(name = "add_by_or_founder") var addbyOrFounder: String? = null
+    @ColumnInfo(name = "add_by_or_founder") var addByOrFounder: String? = null
 ) : Parcelable {
     @ColumnInfo(name = "schedule_id")
     var scheduleId: String = ""
+
+    val fullName: String get() = "$firstName $lastName"
 }

@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.database.network
 
+import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import retrofit2.Response
 import java.io.File
@@ -34,4 +35,15 @@ interface UsersNetwork {
     ): Response<Unit>
 
     suspend fun forgotPassword(email: String): Response<Unit>
+
+    suspend fun searchUser(
+        userId: String,
+        searchWord: String,
+        isInsert: Boolean? = null
+    ): Response<List<Search>>
+
+    suspend fun deleteSearch(
+        searchId: String?,
+        userId: String?
+    ): Response<Unit>
 }
