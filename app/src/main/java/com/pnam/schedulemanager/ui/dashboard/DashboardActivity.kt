@@ -8,13 +8,13 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityDashboardBinding
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.ui.base.BaseActivity
+import com.pnam.schedulemanager.ui.base.slideSecondActivity
 import com.pnam.schedulemanager.ui.login.LoginActivity
 import com.pnam.schedulemanager.ui.scheduleInfo.ScheduleInfoActivity
 import com.pnam.schedulemanager.ui.setting.SettingActivity
@@ -28,7 +28,7 @@ import java.util.*
 class DashboardActivity :
     BaseActivity<ActivityDashboardBinding, DashboardViewModel>(R.layout.activity_dashboard) {
     private val schedulesAdapter: SchedulesAdapter by lazy {
-        SchedulesAdapter(selectedItem, deleteItem)
+        SchedulesAdapter(selectedItem)
     }
 
     private val selectedItem: (Schedule, List<View>) -> Unit by lazy {
@@ -39,12 +39,6 @@ class DashboardActivity :
                 },
                 makeSceneTransitionAnimation(*sharedElements.toTypedArray())
             )
-        }
-    }
-
-    private val deleteItem: (Schedule) -> Unit by lazy {
-        { note ->
-            viewModel.delete(note)
         }
     }
 
@@ -76,19 +70,6 @@ class DashboardActivity :
                     }
                     is Resource.Error -> {
 
-                    }
-                }
-            }
-            deleteLiveData.observe { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-
-                    }
-                    is Resource.Success -> {
-                        showToast(getString(R.string.delete_success))
-                    }
-                    is Resource.Error -> {
-                        showToast(getString(R.string.delete_error))
                     }
                 }
             }
@@ -138,25 +119,19 @@ class DashboardActivity :
         DashboardToolbar()
     }
 
-    private var _searchItem: MenuItem? = null
-    private val searchItem: MenuItem get() = _searchItem!!
-    private val searchItemId: Int by lazy { R.id.search }
-    private var _searchView: SearchView? = null
-    private val searchView: SearchView
-        get() = _searchView ?: synchronized(this) {
-            _searchView ?: (searchItem.actionView as SearchView).also {
-                _searchView = it
-            }
-        }
-
-
     private var _profileItem: MenuItem? = null
     private val profileItem: MenuItem get() = _profileItem!!
+
+    private val settingActivityResult: ActivityResultLauncher<Intent> = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        viewModel.getUser()
+    }
 
     private fun setupUser() {
         toolbar.setBinding(profileItem.actionView.findViewById(R.id.container))
         toolbar.avatarClick = View.OnClickListener {
-            slideSecondActivity(
+            settingActivityResult.launch(
                 Intent(this@DashboardActivity, SettingActivity::class.java).apply {
                     when (val resoruce = viewModel.userLiveData.value) {
                         is Resource.Success -> {
@@ -164,7 +139,7 @@ class DashboardActivity :
                         }
                     }
                 },
-                makeSceneTransitionAnimation(toolbar.binding.avatar).toBundle()
+                makeSceneTransitionAnimation(toolbar.binding.avatar)
             )
         }
     }
@@ -175,59 +150,13 @@ class DashboardActivity :
         }
     }
 
-    private val searchQuery: SearchView.OnQueryTextListener by lazy {
-        object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return if (query.isEmpty()) {
-                    false
-                } else {
-                    searchView.clearFocus()
-                    true
-                }
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return if (newText.isEmpty()) {
-                    false
-                } else {
-                    searchView.clearFocus()
-                    true
-                }
-            }
-        }
-    }
-
-    private val searchExpandItem: MenuItem.OnActionExpandListener by lazy {
-        object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
-                searchView.setQuery("", false)
-                searchView.setOnQueryTextListener(searchQuery)
-                searchView.queryHint = "${getString(R.string.search_schedules)}…"
-                searchView.requestFocus()
-                toolbar.setVisible(false)
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
-                toolbar.setVisible(true)
-                return true
-            }
-        }
-    }
-
-    private fun setUpSearchItem() {
-        searchItem.setOnActionExpandListener(searchExpandItem)
-    }
-
     fun logout() {
         slideSecondActivity(loginIntent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main_toolbar_menu, menu)
-        _searchItem = menu.findItem(searchItemId)
         _profileItem = menu.findItem(R.id.profile)
-        setUpSearchItem()
         setupUser()
         return true
     }

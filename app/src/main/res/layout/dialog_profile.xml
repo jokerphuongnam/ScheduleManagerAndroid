@@ -14,62 +14,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ViewSwitcher
-            android:id="@+id/user_control"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="?android:attr/actionBarSize" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <ImageButton
-                    android:id="@+id/edit"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_background"
-                    app:srcCompat="@drawable/ic_edit" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:padding="16dp">
-
-                <ImageButton
-                    android:id="@+id/cancel_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_background"
-                    app:srcCompat="@drawable/ic_close" />
-
-                <ImageButton
-                    android:id="@+id/ok_btn"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/circle_background"
-                    app:srcCompat="@drawable/ic_check" />
-            </LinearLayout>
-        </ViewSwitcher>
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="16dp"
-            android:layout_weight="1"
-            android:clickable="false"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            app:circle_image_from_url="@{user.avatar}"
-            app:srcCompat="@drawable/color_cursor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -136,7 +85,6 @@
                     android:textColor="?attr/blackLightWhiteNightColor"
                     android:textColorHighlight="?attr/greyColor"
                     android:textCursorDrawable="@drawable/cursor_background_white" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -184,6 +132,37 @@
                         app:tint="?attr/blackLightWhiteNightColor" />
                 </LinearLayout>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.3"
+                    android:gravity="center|end"
+                    android:paddingRight="16dp"
+                    android:text="@string/gender" />
+
+                <EditText
+                    android:id="@+id/gender"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.7"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:gravity="center|start"
+                    android:inputType="text|textCapSentences"
+                    android:text="@{user.gender? @string/male: @string/female}"
+                    android:textColor="?attr/blackLightWhiteNightColor"
+                    android:textColorHighlight="?attr/greyColor"
+                    android:textCursorDrawable="@drawable/cursor_background_white" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 </layout>

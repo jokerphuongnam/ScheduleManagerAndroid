@@ -50,7 +50,6 @@ abstract class AppBindsModules {
     abstract fun getUserRepository(repository: DefaultUsersRepositoryImpl): UsersRepository
 
     //use case
-
     @Binds
     abstract fun getLoginUseCase(useCase: DefaultLoginUseCaseImpl): LoginUseCase
 
@@ -65,9 +64,6 @@ abstract class AppBindsModules {
 
     @Binds
     abstract fun getSettingUseCase(useCase: DefaultSettingUseCaseImpl): SettingUseCase
-
-    @Binds
-    abstract fun getUserInfoUseCase(useCase: DefaultUserInfoUseCaseImpl): UserInfoUseCase
 
     @Binds
     abstract fun getForgotPasswordUseCase(useCase: DefaultForgotPasswordUseCaseImpl): ForgotPasswordUseCase
@@ -92,4 +88,7 @@ abstract class AppBindsModules {
 
     @Binds
     abstract fun getMembersUseCase(useCase: DefaultMembersUseCaseImpl): MembersUseCase
+
+    @Binds
+    abstract fun getEditProfileUseCase(useCase: DefaultEditProfileUseCaseImpl): EditProfileUseCase
 }

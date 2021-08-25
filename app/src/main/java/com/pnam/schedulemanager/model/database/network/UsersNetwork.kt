@@ -24,9 +24,11 @@ interface UsersNetwork {
         avatar: File?
     ): Response<User>
 
-    suspend fun editProfile(user: User, avatar: File? = null): Response<User>
+    suspend fun editProfile(user: User): Response<User>
 
     suspend fun changeAvatar(userId: String, avatar: File? = null): Response<User>
+
+    suspend fun deleteAvatar(userId: String): Response<User>
 
     suspend fun changePassword(
         userId: String,

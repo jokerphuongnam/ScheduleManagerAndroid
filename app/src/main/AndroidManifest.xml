@@ -39,8 +39,12 @@
         <activity
             android:name=".ui.changepassword.ChangePasswordActivity"
             android:label="@string/change_password" />
-        <activity android:name=".ui.scheduleInfo.ScheduleInfoActivity"
-            android:label=""/>
+        <activity
+            android:name=".ui.scheduleInfo.ScheduleInfoActivity"
+            android:label="" />
+        <activity
+            android:name=".ui.editprofile.EditProfileActivity"
+            android:label="Change Profile" />
     </application>
 
 </manifest>

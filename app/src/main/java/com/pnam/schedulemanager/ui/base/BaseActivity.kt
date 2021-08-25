@@ -1,7 +1,5 @@
 package com.pnam.schedulemanager.ui.base
 
-import android.app.ProgressDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.IdRes
@@ -26,22 +24,6 @@ abstract class BaseActivity<BD : ViewDataBinding, VM : BaseViewModel>(
             lifecycleOwner = this@BaseActivity
         }
         createUI()
-    }
-
-    fun slideHActivity(intent: Intent, bundle: Bundle? = null) {
-        startActivity(intent, bundle)
-        overridePendingTransition(
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        )
-    }
-
-    fun slideSecondActivity(intent: Intent, bundle: Bundle? = null) {
-        startActivity(intent, bundle)
-        overridePendingTransition(
-            R.anim.slide_in_top,
-            R.anim.static_inout
-        )
     }
 
     inline fun <reified F : Fragment> navigateFragment(
@@ -86,9 +68,25 @@ abstract class BaseActivity<BD : ViewDataBinding, VM : BaseViewModel>(
 
     override fun onBackPressed() {
         super.onBackPressed()
-        overridePendingTransition(
-            R.anim.static_inout,
-            R.anim.slide_out_top
-        )
+        intent.getParcelableExtra<StartType>(START_TYPE)?.let { effect ->
+            when (effect) {
+                StartType.SLIDE_HORIZONTAL -> {
+                    overridePendingTransition(
+                        R.anim.slide_out_right,
+                        R.anim.slide_in_left
+                    )
+                }
+                StartType.SLIDE_SECOND -> {
+                    overridePendingTransition(
+                        R.anim.static_inout,
+                        R.anim.slide_out_top
+                    )
+                }
+            }
+        }
+    }
+
+    companion object {
+        internal const val START_TYPE: String = "startType"
     }
 }

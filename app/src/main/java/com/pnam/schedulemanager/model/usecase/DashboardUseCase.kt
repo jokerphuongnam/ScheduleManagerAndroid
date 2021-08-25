@@ -16,5 +16,4 @@ interface DashboardUseCase {
 
     suspend fun getSchedules(): List<Schedule>
     suspend fun deleteTask(tasksId: String)
-    suspend fun deleteSchedule(schedule: Schedule)
 }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.provider.MediaStore
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.FragmentOptionsAvatarBinding
 import com.pnam.schedulemanager.ui.base.BaseBottomSheetDialogFragment

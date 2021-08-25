@@ -9,6 +9,6 @@ class DefaultOptionsAvatarUseCaseImpl @Inject constructor(
 
 ) : OptionsAvatarUseCase {
     override suspend fun deleteAvatar(userId: String) {
-        userRepository.changeAvatar(userId)
+        userRepository.deleteAvatar(userId)
     }
 }

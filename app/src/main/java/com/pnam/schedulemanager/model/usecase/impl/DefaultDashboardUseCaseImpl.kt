@@ -30,8 +30,4 @@ class DefaultDashboardUseCaseImpl @Inject constructor(
     override suspend fun deleteTask(tasksId: String) {
         return schedulesRepository.deleteTask(tasksId)
     }
-
-    override suspend fun deleteSchedule(schedule: Schedule) {
-        return schedulesRepository.deleteSchedule(schedule)
-    }
 }

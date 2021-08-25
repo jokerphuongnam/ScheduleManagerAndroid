@@ -115,10 +115,6 @@ interface BaseUI<BD : ViewDataBinding, VM : BaseViewModel> {
         layoutParams = params
     }
 
-    fun Intent.putParcelableExtra(key: String, value: Parcelable) {
-        putExtra(key, value)
-    }
-
     fun makeSceneTransitionAnimation(vararg view: View): ActivityOptionsCompat {
         return ActivityOptionsCompat.makeSceneTransitionAnimation(
             when (this) {

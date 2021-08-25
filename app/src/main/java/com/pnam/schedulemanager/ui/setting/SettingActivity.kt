@@ -13,10 +13,12 @@ import com.pnam.schedulemanager.databinding.ActivitySettingBinding
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.ui.base.BaseActivity
 import com.pnam.schedulemanager.ui.base.BaseFragment
+import com.pnam.schedulemanager.ui.base.slideHActivity
 import com.pnam.schedulemanager.ui.changepassword.ChangePasswordActivity
 import com.pnam.schedulemanager.ui.dashboard.DashboardActivity
 import com.pnam.schedulemanager.ui.login.LoginActivity
 import com.pnam.schedulemanager.ui.setting.optionsavatar.OptionsAvatarFragment
+import com.pnam.schedulemanager.ui.setting.profile.ProfileDialog
 import com.pnam.schedulemanager.ui.setting.reviewavatar.ReviewAvatarFragment
 import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,12 +28,12 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class SettingActivity :
     BaseActivity<ActivitySettingBinding, SettingViewModel>(R.layout.activity_setting) {
-
     internal val imageChoose: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             result.data?.data?.let { uri ->
+                @Suppress("DEPRECATION")
                 MediaStore.Images.Media.getBitmap(contentResolver, uri).let { bitmap ->
                     openReviewAvatar(bitmap)
                 }
@@ -131,7 +133,20 @@ class SettingActivity :
                 }
             }
             showProfile.setOnClickListener {
+                viewModel.userLiveData.value?.let { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
 
+                        }
+                        is Resource.Success -> {
+                            BaseFragment.create(ProfileDialog()) {
+                                putParcelable(USER, resource.data)
+                            }.show(supportFragmentManager, ProfileDialog::class.simpleName)
+                        }
+                        is Resource.Error -> {
+                        }
+                    }
+                }
             }
             changePassword.setOnClickListener {
                 slideHActivity(Intent(this@SettingActivity, ChangePasswordActivity::class.java))
@@ -168,11 +183,17 @@ class SettingActivity :
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUser()
+    }
+
     override val viewModel: SettingViewModel by viewModels()
 
     companion object {
-        const val AVATAR_BITMAP = "image_bitmap"
-        const val AVATAR_URL = "image_url"
-        const val USER_ID = "user_id"
+        const val AVATAR_BITMAP: String = "image_bitmap"
+        const val AVATAR_URL: String = "image_url"
+        const val USER_ID: String = "user_id"
+        const val USER: String = "user"
     }
 }

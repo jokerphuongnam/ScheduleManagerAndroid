@@ -27,7 +27,6 @@ import java.util.*
 @AndroidEntryPoint
 class RegisterActivity :
     BaseActivity<ActivityRegisterBinding, RegisterViewModel>(R.layout.activity_register) {
-
     private val imageChoose: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -58,9 +57,6 @@ class RegisterActivity :
         actionBar.setDisplayHomeAsUpEnabled(true)
     }
 
-    /**
-     * when click ok button of date picker dialog will set time for birthday of user
-     * */
     private val datePickerCallBack: DatePickerDialog.OnDateSetListener by lazy {
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             val calendar = Calendar.getInstance()
@@ -84,10 +80,6 @@ class RegisterActivity :
             )
         }
 
-    /**
-     * check regex for user
-     * if satisfy will to catch
-     * */
     private val registerAction: View.OnClickListener by lazy {
         View.OnClickListener {
             binding.apply {
@@ -204,10 +196,6 @@ class RegisterActivity :
         }
     }
 
-    /**
-     * this event will enable the back
-     * function to the button on press
-     * */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

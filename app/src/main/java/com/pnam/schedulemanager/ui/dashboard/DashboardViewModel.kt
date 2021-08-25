@@ -42,23 +42,6 @@ class DashboardViewModel @Inject constructor(
         }
     }
 
-    internal val deleteLiveData: MutableLiveData<Resource<Long>> by lazy {
-        MutableLiveData<Resource<Long>>()
-    }
-
-    internal fun delete(schedule: Schedule) {
-        deleteLiveData.postValue(Resource.Loading())
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                useCase.deleteSchedule(schedule)
-                deleteLiveData.postValue(Resource.Success(0))
-            } catch (e: Exception){
-                e.printStackTrace()
-                deleteLiveData.postValue(Resource.Error(""))
-            }
-        }
-    }
-
     private val _userLiveData: MutableLiveData<Resource<User?>> by lazy {
         MutableLiveData<Resource<User?>>()
     }

@@ -15,8 +15,7 @@ import com.pnam.schedulemanager.databinding.ItemScheduleBinding
 import com.pnam.schedulemanager.model.database.domain.Schedule
 
 class SchedulesAdapter(
-    private val itemClick: (Schedule, List<View>) -> Unit,
-    private val deleteCallback: (Schedule) -> Unit
+    private val itemClick: (Schedule, List<View>) -> Unit
 ) :
     ListAdapter<Schedule, SchedulesAdapter.NoteViewHolder>(DIFF_CALLBACK) {
 
@@ -25,12 +24,11 @@ class SchedulesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder =
-        NoteViewHolder.create(parent, viewType, itemClick, deleteCallback)
+        NoteViewHolder.create(parent, viewType, itemClick)
 
     class NoteViewHolder private constructor(
         private val binding: ItemScheduleBinding,
-        private val itemClick: (Schedule, List<View>) -> Unit,
-        private val deleteCallback: (Schedule) -> Unit
+        private val itemClick: (Schedule, List<View>) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -50,32 +48,6 @@ class SchedulesAdapter(
                             )
                         )
                     }
-                    setOnLongClickListener {
-                        PopupMenu(context, it).apply {
-                            setOnMenuItemClickListener { item ->
-                                when (item.itemId) {
-                                    R.id.edit -> {
-                                        itemClick(
-                                            schedule,
-                                            mutableListOf(
-                                                binding.title,
-                                                binding.description
-                                            )
-                                        )
-                                        true
-                                    }
-                                    R.id.delete -> {
-                                        deleteCallback(schedule)
-                                        true
-                                    }
-                                    else -> false
-                                }
-                            }
-                            inflate(R.menu.schedule_item_control)
-                            show()
-                        }
-                        true
-                    }
                 }
             }
         }
@@ -84,8 +56,7 @@ class SchedulesAdapter(
             fun create(
                 parent: ViewGroup,
                 viewType: Int,
-                itemClick: (Schedule, List<View>) -> Unit,
-                longClick: (Schedule) -> Unit
+                itemClick: (Schedule, List<View>) -> Unit
             ): NoteViewHolder {
                 return NoteViewHolder(
                     DataBindingUtil.inflate(
@@ -94,8 +65,7 @@ class SchedulesAdapter(
                         parent,
                         false
                     ),
-                    itemClick,
-                    longClick
+                    itemClick
                 )
             }
         }

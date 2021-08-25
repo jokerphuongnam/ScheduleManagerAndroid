@@ -54,8 +54,14 @@ class UsersRetrofitServiceImpl @Inject constructor(
         )
     }
 
-    override suspend fun editProfile(user: User, avatar: File?): Response<User> {
-        TODO("Not yet implemented")
+    override suspend fun editProfile(user: User): Response<User> {
+        return service.editProfile(
+            user.userId,
+            user.firstName,
+            user.lastName,
+            user.birthday,
+            user.gender
+        )
     }
 
     override suspend fun changeAvatar(userId: String, avatar: File?): Response<User> {
@@ -70,6 +76,13 @@ class UsersRetrofitServiceImpl @Inject constructor(
             } else {
                 null
             }
+        )
+    }
+
+    override suspend fun deleteAvatar(userId: String): Response<User> {
+        return service.editProfile(
+            userId,
+            avatar = "delete avatar"
         )
     }
 
@@ -124,11 +137,11 @@ class UsersRetrofitServiceImpl @Inject constructor(
         @PUT("${PATH}editprofile")
         suspend fun editProfile(
             @Field("userId") userId: String,
-            @Field("firstName") firstName: String?,
-            @Field("lastName") lastName: String?,
-            @Field("birthday") birthday: Long?,
-            @Field("gender") gender: Boolean?,
-            @Field("avatar") avatar: String?
+            @Field("firstName") firstName: String? = null,
+            @Field("lastName") lastName: String? = null,
+            @Field("birthday") birthday: Long? = null,
+            @Field("gender") gender: Boolean? = null,
+            @Field("avatar") avatar: String? = null
         ): Response<User>
 
         @Multipart

@@ -238,7 +238,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                         putParcelableArray(MEMBERS, schedule.members.toTypedArray())
                         putString(COLOR, schedule.color)
                     }
-                }.show(supportFragmentManager, InputTaskDialog::class.simpleName)
+                }.show(supportFragmentManager, MembersDialog::class.simpleName)
             }
         }
     }

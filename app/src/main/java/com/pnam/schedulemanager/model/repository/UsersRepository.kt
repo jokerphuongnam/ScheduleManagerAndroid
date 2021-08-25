@@ -27,9 +27,11 @@ interface UsersRepository {
 
     suspend fun deleteUser(uid: Long): Int
 
-    suspend fun editProfile(user: User, avatar: File?): User
+    suspend fun editProfile(user: User): User
 
     suspend fun changeAvatar(userId: String, avatar: File? = null): User
+
+    suspend fun deleteAvatar(userId: String): User
 
     suspend fun changePassword(
         email: String,

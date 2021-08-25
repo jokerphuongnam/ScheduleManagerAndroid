@@ -1,13 +1,12 @@
 package com.pnam.schedulemanager.model.usecase
 
-import android.net.Uri
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.repository.UsersRepository
+import javax.inject.Singleton
 
-interface UserInfoUseCase {
+@Singleton
+interface EditProfileUseCase {
     val usersRepository: UsersRepository
 
-    suspend fun getUser(): User
-
-    suspend fun editProfile(user: User, avatar: Uri? = null): User
+    suspend fun editProfile(user: User)
 }

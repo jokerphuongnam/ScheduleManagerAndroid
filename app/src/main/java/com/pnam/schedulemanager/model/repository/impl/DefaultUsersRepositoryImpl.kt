@@ -48,8 +48,8 @@ class DefaultUsersRepositoryImpl @Inject constructor(
 
     override suspend fun deleteUser(uid: Long): Int = local.deleteUser(uid)
 
-    override suspend fun editProfile(user: User, avatar: File?): User {
-        return network.editProfile(user, avatar).let { response ->
+    override suspend fun editProfile(user: User): User {
+        return network.editProfile(user).let { response ->
             val responseCode = response.code()
             when {
                 responseCode.equals(CONFLICT) -> {
@@ -69,6 +69,24 @@ class DefaultUsersRepositoryImpl @Inject constructor(
 
     override suspend fun changeAvatar(userId: String, avatar: File?): User {
         val response = network.changeAvatar(userId, avatar)
+        val responseCode = response.code()
+        when {
+            responseCode.equals(SUCCESS) -> {
+                val user = response.body()!!
+                local.updateUsers(user)
+                return user
+            }
+            responseCode.equals(NOT_FOUND) -> {
+                throw NotFoundException()
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun deleteAvatar(userId: String): User {
+        val response = network.deleteAvatar(userId)
         val responseCode = response.code()
         when {
             responseCode.equals(SUCCESS) -> {
