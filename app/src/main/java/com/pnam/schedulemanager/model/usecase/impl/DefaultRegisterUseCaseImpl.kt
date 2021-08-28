@@ -1,7 +1,6 @@
 package com.pnam.schedulemanager.model.usecase.impl
 
-import android.net.Uri
-import androidx.core.net.toFile
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.repository.UsersRepository
 import com.pnam.schedulemanager.model.usecase.RegisterUseCase
@@ -16,7 +15,7 @@ class DefaultRegisterUseCaseImpl @Inject constructor(
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: Uri?
+        avatar: Bitmap?
     ): User =
-        usersRepository.register(user, email, password, loginId, loginType, avatar?.toFile())
+        usersRepository.register(user, email, password, loginId, loginType, avatar)
 }

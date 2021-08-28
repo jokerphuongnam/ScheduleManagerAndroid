@@ -1,7 +1,6 @@
 package com.pnam.schedulemanager.model.usecase.impl
 
-import android.net.Uri
-import androidx.core.net.toFile
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
@@ -38,11 +37,11 @@ class DefaultScheduleInfoUseCaseImpl @Inject constructor(
     override suspend fun getScheduleInfo(scheduleId: String): Schedule =
         schedulesRepository.getScheduleInfo(scheduleId)
 
-    override suspend fun addMultiMedia(scheduleId: String, multiMedia: List<Uri>) =
+    override suspend fun addMultiMedia(scheduleId: String, multiMedia: List<Bitmap>) =
         schedulesRepository.addMultiMedia(
             scheduleId,
             usersRepository.getCurrentUser(),
-            multiMedia.map { it.toFile() }
+            multiMedia
         )
 
     override suspend fun deleteMedia(mediaId: String) = schedulesRepository.deleteMedia(mediaId)

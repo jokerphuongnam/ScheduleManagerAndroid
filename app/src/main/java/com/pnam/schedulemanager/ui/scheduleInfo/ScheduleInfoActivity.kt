@@ -1,8 +1,7 @@
 package com.pnam.schedulemanager.ui.scheduleInfo
 
-import android.app.Activity
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
+import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -16,18 +15,19 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityScheduleInfoBinding
+import com.pnam.schedulemanager.foreground.AlarmBroadcastReceiver
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.ui.base.BaseActivity
 import com.pnam.schedulemanager.ui.base.BaseFragment
-import com.pnam.schedulemanager.ui.base.uriToBitmap
+import com.pnam.schedulemanager.ui.base.putParcelableExtra
 import com.pnam.schedulemanager.ui.dashboard.DashboardActivity.Companion.SCHEDULE
 import com.pnam.schedulemanager.ui.scheduleInfo.inputtask.InputTaskDialog
 import com.pnam.schedulemanager.ui.scheduleInfo.members.MembersDialog
 import com.pnam.schedulemanager.utils.Resource
+import com.pnam.schedulemanager.utils.toCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
@@ -42,7 +42,9 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    viewModel.insertMedia(uri)
+                    MediaStore.Images.Media.getBitmap(contentResolver, uri).let { bitmap ->
+                        viewModel.insertMedia(bitmap)
+                    }
                 }
             }
         }
@@ -51,9 +53,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 (result.data?.extras?.get("data") as Bitmap).apply {
-                    uriToBitmap(this)?.apply {
-                        viewModel.insertMedia(this)
-                    }
+                    viewModel.insertMedia(this)
                 }
             }
         }
@@ -79,12 +79,8 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
     }
 
     private val imagesAdapter: ImagesAdapter by lazy {
-        ImagesAdapter { size ->
-            if (size == 0) {
-                binding.images.visibility = View.GONE
-            } else {
-                binding.images.visibility = View.VISIBLE
-            }
+        ImagesAdapter { image ->
+            viewModel.deleteMedia(image.mediaId)
         }
     }
 
@@ -100,8 +96,11 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
             }
             images.apply {
                 adapter = imagesAdapter
-                layoutManager =
-                    StaggeredGridLayoutManager(2, RecyclerView.VERTICAL)
+                layoutManager = LinearLayoutManager(
+                    this@ScheduleInfoActivity,
+                    RecyclerView.VERTICAL,
+                    false
+                )
             }
             colors.apply {
                 adapter = colorsAdapter
@@ -135,13 +134,13 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         val scheduleReceiver: Schedule? = intent.getParcelableExtra(SCHEDULE)
         viewModel.initSchedule(scheduleReceiver?.scheduleId)
         val hexColor = if (scheduleReceiver == null) {
-            binding.isEditMode = true
+            viewModel.isEditModeLiveData.value = true
             binding.cancel.visibility = View.GONE
             setActionBarAttr(getString(R.string.create_new_schedule))
             colorsAdapter.selectedColor = ColorsAdapter.ColorElement.YELLOW
             ColorsAdapter.ColorElement.YELLOW.rawValue
         } else {
-            binding.isEditMode = false
+            viewModel.isEditModeLiveData.value = false
             binding.schedule = scheduleReceiver
             binding.cancel.visibility = View.VISIBLE
             setActionBarAttr("${getString(R.string.edit_schedule)} ${scheduleReceiver.title}")
@@ -150,6 +149,12 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         setBackgroundColor(hexColor)
         binding.apply {
             tabWrap.setOnMenuItemClickListener {
+                if (
+                    binding.isEditMode == false ||
+                    viewModel.newSchedule.value?.scheduleId?.isEmpty() == true
+                ) {
+                    return@setOnMenuItemClickListener false
+                }
                 when (it.itemId) {
                     R.id.image_choose -> {
                         imageChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -183,6 +188,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     isEditMode = false
                     binding.background.setBackgroundColor(Color.parseColor(s.color))
                 }
+                viewModel.isEditModeLiveData.value = false
             }
             save.setOnClickListener {
                 if (scheduleReceiver?.title?.isEmpty() == true) {
@@ -221,16 +227,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 ).show()
             }
             changeMode.setOnClickListener {
-                if (isEditMode == true) {
-                    binding.schedule = viewModel.newSchedule.value
-                    binding.background.setBackgroundColor(
-                        Color.parseColor(
-                            binding.schedule?.color ?: ColorsAdapter.ColorElement.YELLOW.rawValue
-                        )
-                    )
-                }
-                isEditMode = !(isEditMode ?: false)
-                tasksInfoAdapter.isEditMode = isEditMode ?: false
+                viewModel.isEditModeLiveData.value = !(viewModel.isEditModeLiveData.value ?: true)
             }
             mutableListOf(first, second, third).setOnClickListener {
                 BaseFragment.create(MembersDialog()) {
@@ -241,6 +238,25 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 }.show(supportFragmentManager, MembersDialog::class.simpleName)
             }
         }
+    }
+
+    private fun scheduleAlarm(schedule: Schedule) {
+        val alarmBroadCastIntent = Intent(applicationContext, AlarmBroadcastReceiver::class.java)
+        alarmBroadCastIntent.putParcelableExtra(AlarmBroadcastReceiver.SCHEDULE, schedule)
+        val scheduleAlarm = schedule.scheduleTime.toCalendar
+        scheduleAlarm[Calendar.SECOND] = 0
+        scheduleAlarm[Calendar.MILLISECOND] = 0
+        val alarmPendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            -schedule.scheduleTime.toInt(),
+            alarmBroadCastIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        (getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            scheduleAlarm.timeInMillis,
+            alarmPendingIntent
+        )
     }
 
     private fun setupViewModel() {
@@ -254,10 +270,10 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                             { it.finishBy },
                             { it.createAt }
                         )
-                    )
+                    ).toMutableList()
                 )
+                imagesAdapter.submitList(schedule.images.toMutableList())
                 setActionBarAttr("${getString(R.string.edit_schedule)} ${schedule.title}")
-                imagesAdapter.addUrl(schedule.images.map { media -> media.mediaUrl })
                 colorsAdapter.selectedColor = ColorsAdapter.ColorElement.values().first {
                     it.rawValue == schedule.color
                 }
@@ -266,7 +282,9 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 } else {
                     binding.cancel.visibility = View.VISIBLE
                 }
+                viewModel.isEditModeLiveData.value = false
                 tasksInfoAdapter.notifyDataSetChanged()
+                scheduleAlarm(schedule)
             }
             updateSchedule.observe { resource ->
                 when (resource) {
@@ -286,6 +304,18 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 tasksInfoAdapter.submitList(
                     viewModel.newSchedule.value?.tasks?.toMutableList() ?: emptyList()
                 )
+            }
+            isEditModeLiveData.observe { isEditMode ->
+                if (isEditMode == true) {
+                    binding.schedule = viewModel.newSchedule.value
+                    binding.background.setBackgroundColor(
+                        Color.parseColor(
+                            binding.schedule?.color ?: ColorsAdapter.ColorElement.YELLOW.rawValue
+                        )
+                    )
+                }
+                tasksInfoAdapter.isEditMode = isEditMode
+                binding.isEditMode = isEditMode
             }
         }
     }

@@ -31,9 +31,9 @@ data class Schedule(
     @ColumnInfo(name = "description") var description: String = "",
     @ColumnInfo(name = "color") var color: String = ColorsAdapter.ColorElement.YELLOW.rawValue,
     @ColumnInfo(name = "user_id") var userId: String? = null,
-    @ColumnInfo(name = "modified_at") var modifiedAt: Long = Date().time,
-    @ColumnInfo(name = "created_at") var createAt: Long = Date().time,
-    @ColumnInfo(name = "schedule_time") var scheduleTime: Long = Date().time
+    @ColumnInfo(name = "modified_at") var modifiedAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "created_at") var createAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "schedule_time") var scheduleTime: Long = System.currentTimeMillis()
 ) : Parcelable {
     @IgnoredOnParcel
     @Ignore

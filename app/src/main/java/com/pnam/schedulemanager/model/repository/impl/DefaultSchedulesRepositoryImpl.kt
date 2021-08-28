@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.repository.impl
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Media
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
@@ -244,7 +245,7 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>) {
+    override suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<Bitmap>) {
         val response = network.addMultiMedia(scheduleId, userId, multiMedia)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {

@@ -1,6 +1,9 @@
 package com.pnam.schedulemanager.ui.dashboard
 
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
@@ -12,16 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityDashboardBinding
+import com.pnam.schedulemanager.foreground.AlarmBroadcastReceiver
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.ui.base.BaseActivity
+import com.pnam.schedulemanager.ui.base.putParcelableExtra
 import com.pnam.schedulemanager.ui.base.slideSecondActivity
 import com.pnam.schedulemanager.ui.login.LoginActivity
 import com.pnam.schedulemanager.ui.scheduleInfo.ScheduleInfoActivity
 import com.pnam.schedulemanager.ui.setting.SettingActivity
 import com.pnam.schedulemanager.utils.Resource
+import com.pnam.schedulemanager.utils.toCalendar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -56,6 +63,40 @@ class DashboardActivity :
             }
         }
 
+    private fun clearAlarm() {
+        val updateServiceIntent = Intent(applicationContext, AlarmBroadcastReceiver::class.java)
+        val pendingUpdateIntent = PendingIntent.getService(
+            applicationContext,
+            0,
+            updateServiceIntent,
+            0
+        )
+        try {
+            (applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager).cancel(
+                pendingUpdateIntent
+            )
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun scheduleAlarm(schedule: Schedule) {
+        val alarmBroadCastIntent = Intent(applicationContext, AlarmBroadcastReceiver::class.java)
+        alarmBroadCastIntent.putParcelableExtra(AlarmBroadcastReceiver.SCHEDULE, schedule)
+        val scheduleAlarm = schedule.scheduleTime.toCalendar
+        scheduleAlarm[Calendar.SECOND] = 0
+        scheduleAlarm[Calendar.MILLISECOND] = 0
+        val alarmPendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            -schedule.scheduleTime.toInt(),
+            alarmBroadCastIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        (getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            scheduleAlarm.timeInMillis,
+            alarmPendingIntent
+        )
+    }
 
     private fun setupViewMode() {
         viewModel.apply {
@@ -67,9 +108,16 @@ class DashboardActivity :
                     is Resource.Success -> {
                         schedulesAdapter.submitList(resource.data.sortedWith(compareBy { it.scheduleTime }))
                         binding.schedulesRefresh.isRefreshing = false
+                        clearAlarm()
+                        val currentTime = System.currentTimeMillis()
+                        resource.data.filter { schedule ->
+                            schedule.scheduleTime > currentTime
+                        }.forEach { schedule ->
+                            scheduleAlarm(schedule)
+                        }
                     }
                     is Resource.Error -> {
-
+                        binding.schedulesRefresh.isRefreshing = false
                     }
                 }
             }
@@ -133,9 +181,9 @@ class DashboardActivity :
         toolbar.avatarClick = View.OnClickListener {
             settingActivityResult.launch(
                 Intent(this@DashboardActivity, SettingActivity::class.java).apply {
-                    when (val resoruce = viewModel.userLiveData.value) {
+                    when (val resource = viewModel.userLiveData.value) {
                         is Resource.Success -> {
-                            putExtra(USER, resoruce.data)
+                            putExtra(USER, resource.data)
                         }
                     }
                 },

@@ -20,11 +20,11 @@ class MembersViewModel @Inject constructor(
     private val _searchUserLiveData: MutableLiveData<Resource<List<Search>>> by lazy { MutableLiveData() }
     internal val searchUserLiveData: MutableLiveData<Resource<List<Search>>> get() = _searchUserLiveData
 
-    internal fun searchUser(searchWord: String) {
+    internal fun searchUser(searchWord: String, scheduleId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _searchUserLiveData.postValue(Resource.Loading())
             try {
-                useCase.searchUser(searchWord).let { flow ->
+                useCase.searchUser(searchWord, scheduleId).let { flow ->
                     flow.collect { searches ->
                         _searchUserLiveData.postValue(Resource.Success(searches))
                     }
@@ -39,14 +39,15 @@ class MembersViewModel @Inject constructor(
     private val _searchResultsLiveData: MutableLiveData<Resource<List<Search>>> by lazy { MutableLiveData() }
     internal val searchResultsLiveData: MutableLiveData<Resource<List<Search>>> get() = _searchResultsLiveData
 
-    internal fun submitSearch(searchWord: String) {
+    internal fun submitSearch(searchWord: String, scheduleId: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 _searchResultsLiveData.postValue(Resource.Loading())
                 _searchResultsLiveData.postValue(
                     Resource.Success(
                         useCase.getSearchResultUser(
-                            searchWord
+                            searchWord,
+                            scheduleId
                         )
                     )
                 )

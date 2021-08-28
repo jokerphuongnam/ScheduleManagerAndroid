@@ -7,6 +7,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".SchedulesManagerApplication"
@@ -45,6 +48,12 @@
         <activity
             android:name=".ui.editprofile.EditProfileActivity"
             android:label="Change Profile" />
-    </application>
 
+        <receiver android:name=".foreground.AlarmBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".foreground.AlarmService" />
+    </application>
 </manifest>

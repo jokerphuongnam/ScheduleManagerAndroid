@@ -1,6 +1,6 @@
 package com.pnam.schedulemanager.ui.setting.reviewavatar
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pnam.schedulemanager.model.usecase.ReviewAvatarUseCase
@@ -16,7 +16,7 @@ class ReviewAvatarViewModel @Inject constructor(
     private val useCase: ReviewAvatarUseCase
 ) : BaseViewModel() {
 
-    internal lateinit var avatar: Uri
+    internal lateinit var avatar: Bitmap
     internal lateinit var userId: String
 
     internal val uploadAvatarLiveData: MutableLiveData<Resource<Boolean>> by lazy { MutableLiveData() }

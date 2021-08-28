@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.database.network
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import retrofit2.Response
@@ -21,12 +22,12 @@ interface UsersNetwork {
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: File?
+        avatar: Bitmap?
     ): Response<User>
 
     suspend fun editProfile(user: User): Response<User>
 
-    suspend fun changeAvatar(userId: String, avatar: File? = null): Response<User>
+    suspend fun changeAvatar(userId: String, avatar: Bitmap? = null): Response<User>
 
     suspend fun deleteAvatar(userId: String): Response<User>
 
@@ -40,6 +41,7 @@ interface UsersNetwork {
 
     suspend fun searchUser(
         userId: String,
+        scheduleId: String,
         searchWord: String,
         isInsert: Boolean? = null
     ): Response<List<Search>>

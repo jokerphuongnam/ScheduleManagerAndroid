@@ -5,9 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
-import java.util.*
 
 @Parcelize
 @Entity(
@@ -22,7 +20,7 @@ import java.util.*
 )
 open class Media(
     @PrimaryKey @ColumnInfo(name = "media_id") open var mediaId: String = "",
-    @ColumnInfo(name = "create_at") open var createAt: Long = Date().time,
+    @ColumnInfo(name = "create_at") open var createAt: Long = System.currentTimeMillis(),
     @ColumnInfo(name = "create_by") open var createBy: String = "",
     @ColumnInfo(name = "media_url") open var mediaUrl: String = ""
 ) : Parcelable {

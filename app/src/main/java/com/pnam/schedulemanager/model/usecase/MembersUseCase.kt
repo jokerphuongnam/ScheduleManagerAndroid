@@ -12,9 +12,9 @@ interface MembersUseCase {
     val usersRepository: UsersRepository
     val schedulesRepository: SchedulesRepository
 
-    fun searchUser(searchWord: String): Flow<List<Search>>
+    fun searchUser(searchWord: String, scheduleId: String): Flow<List<Search>>
 
-    suspend fun getSearchResultUser(searchWord: String): List<Search>
+    suspend fun getSearchResultUser(searchWord: String, scheduleId: String): List<Search>
 
     suspend fun deleteSearch(searchId: String)
 

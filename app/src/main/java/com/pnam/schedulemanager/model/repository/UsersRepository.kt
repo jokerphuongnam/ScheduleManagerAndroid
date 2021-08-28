@@ -1,11 +1,11 @@
 package com.pnam.schedulemanager.model.repository
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.local.CurrentUser
 import com.pnam.schedulemanager.model.database.local.impl.UserLocal
 import com.pnam.schedulemanager.model.database.network.UsersNetwork
-import java.io.File
 import javax.inject.Singleton
 
 @Singleton
@@ -29,7 +29,7 @@ interface UsersRepository {
 
     suspend fun editProfile(user: User): User
 
-    suspend fun changeAvatar(userId: String, avatar: File? = null): User
+    suspend fun changeAvatar(userId: String, avatar: Bitmap? = null): User
 
     suspend fun deleteAvatar(userId: String): User
 
@@ -47,13 +47,14 @@ interface UsersRepository {
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: File?
+        avatar: Bitmap?
     ): User
 
     suspend fun getUser(): User
 
     suspend fun searchUser(
         userId: String,
+        scheduleId: String,
         searchWord: String,
         isInsert: Boolean? = null
     ): List<Search>

@@ -16,7 +16,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityRegisterBinding
 import com.pnam.schedulemanager.ui.base.BaseActivity
-import com.pnam.schedulemanager.ui.base.uriToBitmap
 import com.pnam.schedulemanager.ui.login.LoginActivity
 import com.pnam.schedulemanager.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +30,9 @@ class RegisterActivity :
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    viewModel.avatar = uri
+                    MediaStore.Images.Media.getBitmap(contentResolver, uri).let { bitmap ->
+                        viewModel.avatar = bitmap
+                    }
                     binding.image.setImageURI(uri)
                     binding.imageLayout.displayedChild = 1
                 }
@@ -44,7 +45,7 @@ class RegisterActivity :
                 (result.data?.extras?.get("data") as Bitmap).apply {
                     binding.image.setImageBitmap(this)
                     binding.imageLayout.displayedChild = 1
-                    viewModel.avatar = uriToBitmap(this)
+                    viewModel.avatar = this
                 }
             }
         }

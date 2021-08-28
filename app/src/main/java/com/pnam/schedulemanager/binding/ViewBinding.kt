@@ -52,20 +52,6 @@ fun imageFromUrl(imageView: ImageView, url: String?) {
     }
 }
 
-@BindingAdapter("image_from_url_or_uri")
-fun imageFromUrlOrUri(imageView: ImageView, images: ImagesAdapter.ImageType<*>?) {
-    images ?: return
-    when (images) {
-        is ImagesAdapter.ImageType.ImageUrl -> {
-            imageFromUrl(imageView, images.image)
-        }
-        is ImagesAdapter.ImageType.ImageBitMap -> {
-            imageView.setImageBitmap(images.image)
-        }
-    }
-    imageView.animate().cancel()
-}
-
 fun ImageView.loading() {
     startAnimation(AnimationUtils.loadAnimation(context, R.anim.rotate))
 }

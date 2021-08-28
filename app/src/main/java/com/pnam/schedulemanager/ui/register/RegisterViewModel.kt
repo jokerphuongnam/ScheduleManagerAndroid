@@ -1,6 +1,6 @@
 package com.pnam.schedulemanager.ui.register
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pnam.schedulemanager.model.database.domain.User
@@ -28,7 +28,7 @@ class RegisterViewModel @Inject constructor(
 
     internal val registerLiveData: MutableLiveData<Resource<User>> get() = _registerLiveData
 
-    internal var avatar: Uri? = null
+    internal var avatar: Bitmap? = null
 
     internal fun registerWithEmailPass(email: String, password: String) {
         _registerLiveData.postValue(Resource.Loading())

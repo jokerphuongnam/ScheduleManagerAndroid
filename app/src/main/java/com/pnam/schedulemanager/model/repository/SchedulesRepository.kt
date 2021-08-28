@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.repository
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
@@ -34,7 +35,7 @@ interface SchedulesRepository {
 
     suspend fun leaveGroup(scheduleId: String, userId: String)
 
-    suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>)
+    suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<Bitmap>)
 
     suspend fun deleteMedia(mediaId: String)
 

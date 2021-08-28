@@ -1,11 +1,16 @@
 package com.pnam.schedulemanager.model.database.network.impl
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
+import com.pnam.schedulemanager.utils.toMultipartBodies
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 import javax.inject.Inject
 
 
@@ -92,13 +97,17 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
     override suspend fun addMultiMedia(
         scheduleId: String,
         userId: String,
-        multiMedia: List<File>
+        multiMedia: List<Bitmap>
     ): Response<Unit> {
-        TODO("Not yet implemented")
+        return service.addMultiMedia(
+            scheduleId.toRequestBody("text/plain".toMediaTypeOrNull()),
+            userId.toRequestBody("text/plain".toMediaTypeOrNull()),
+            multiMedia.toMultipartBodies("multimedia")
+        )
     }
 
     override suspend fun deleteMedia(mediaId: String): Response<Unit> {
-        TODO("Not yet implemented")
+        return service.deleteMedia(mediaId)
     }
 
     override suspend fun deleteMultiMedia(multiMediaId: List<String>): Response<Unit> {
@@ -165,14 +174,28 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
 
         @DELETE("${SCHEDULES}{scheduleId}/member/leavegroup/{userId}")
         suspend fun leaveGroup(
-            @Path("scheduleId")scheduleId: String,
-            @Path("userId")userId: String
+            @Path("scheduleId") scheduleId: String,
+            @Path("userId") userId: String
+        ): Response<Unit>
+
+        @Multipart
+        @POST("${MEDIA}addmultimedia")
+        suspend fun addMultiMedia(
+            @Part("scheduleId") scheduleId: RequestBody,
+            @Part("userId") userId: RequestBody,
+            @Part multiMedia: List<MultipartBody.Part>
+        ): Response<Unit>
+
+        @DELETE("${MEDIA}deletemedia/{mediaId}")
+        suspend fun deleteMedia(
+            @Path("mediaId") mediaId: String
         ): Response<Unit>
     }
 
     private companion object {
-        private const val SCHEDULES = "schedule/"
-        private const val TASKS = "${SCHEDULES}task/"
-        private const val MEMBERS = "${SCHEDULES}member/"
+        private const val SCHEDULES: String = "schedule/"
+        private const val TASKS: String = "${SCHEDULES}task/"
+        private const val MEMBERS: String = "${SCHEDULES}member/"
+        private const val MEDIA: String = "${SCHEDULES}media/"
     }
 }

@@ -1,9 +1,9 @@
 package com.pnam.schedulemanager.model.database.network
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import retrofit2.Response
-import java.io.File
 import javax.inject.Singleton
 
 @Singleton
@@ -45,7 +45,11 @@ interface SchedulesNetwork {
 
     suspend fun leaveGroup(scheduleId: String, userId: String): Response<Unit>
 
-    suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<File>): Response<Unit>
+    suspend fun addMultiMedia(
+        scheduleId: String,
+        userId: String,
+        multiMedia: List<Bitmap>
+    ): Response<Unit>
 
     suspend fun deleteMedia(mediaId: String): Response<Unit>
 

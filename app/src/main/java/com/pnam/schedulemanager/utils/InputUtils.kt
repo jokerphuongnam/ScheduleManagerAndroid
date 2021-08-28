@@ -61,7 +61,7 @@ fun String.nameRegex(): Int = when {
 @Throws(NoErrorException::class)
 @StringRes
 fun Long.birthdayRegex(): Int = when {
-    this > Date().time -> {
+    this > System.currentTimeMillis() -> {
         R.string.great_than_current_date
     }
     else -> {

@@ -1,6 +1,6 @@
 package com.pnam.schedulemanager.model.usecase
 
-import android.net.Uri
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.repository.UsersRepository
 import javax.inject.Singleton
@@ -15,6 +15,6 @@ interface RegisterUseCase {
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: Uri? = null
+        avatar: Bitmap? = null
     ): User
 }

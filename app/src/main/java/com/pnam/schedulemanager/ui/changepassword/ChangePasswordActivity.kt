@@ -24,11 +24,6 @@ class ChangePasswordActivity :
         actionBar = supportActionBar!!
     }
 
-    /**
-     * after click change password will check repeat password with new password will set error for repeat password
-     * if repeat password do not same new password
-     * else check password in net work
-     * */
     private fun setUpEvent() {
         binding.apply {
             changePasswordBtn.setOnClickListener {
@@ -56,15 +51,9 @@ class ChangePasswordActivity :
                             changePasswordError.isVisible = false
                             changePasswordError.text = ""
                         }
-                        /**
-                         * after change password success will back to main activity and show toast
-                         * */
                         is Resource.Success -> {
                             finish()
                         }
-                        /**
-                         * here is unknown error
-                         * */
                         is Resource.Error -> {
                             if(resource.message == "NotFound"){
                                 changePasswordError.isVisible = true
@@ -82,12 +71,6 @@ class ChangePasswordActivity :
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        dismissProgressDialog()
-        showToast(getString(R.string.change_password_success))
     }
 
     override fun createUI() {

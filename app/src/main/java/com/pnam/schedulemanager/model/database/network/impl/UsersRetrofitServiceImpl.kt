@@ -1,16 +1,16 @@
 package com.pnam.schedulemanager.model.database.network.impl
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.network.UsersNetwork
+import com.pnam.schedulemanager.utils.toMultipartBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 import javax.inject.Inject
 
 class UsersRetrofitServiceImpl @Inject constructor(
@@ -31,7 +31,7 @@ class UsersRetrofitServiceImpl @Inject constructor(
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: File?
+        avatar: Bitmap?
     ): Response<User> {
         return service.register(
             user.firstName.toRequestBody("text/plain".toMediaTypeOrNull()),
@@ -42,15 +42,7 @@ class UsersRetrofitServiceImpl @Inject constructor(
             password?.toRequestBody("text/plain".toMediaTypeOrNull()),
             loginId?.toRequestBody("text/plain".toMediaTypeOrNull()),
             loginType?.toRequestBody("text/plain".toMediaTypeOrNull()),
-            if (avatar != null) {
-                MultipartBody.Part.createFormData(
-                    "avatar",
-                    "avatar",
-                    avatar.asRequestBody("image/*".toMediaTypeOrNull())
-                )
-            } else {
-                null
-            }
+            avatar?.toMultipartBody("avatar")
         )
     }
 
@@ -64,18 +56,10 @@ class UsersRetrofitServiceImpl @Inject constructor(
         )
     }
 
-    override suspend fun changeAvatar(userId: String, avatar: File?): Response<User> {
+    override suspend fun changeAvatar(userId: String, avatar: Bitmap?): Response<User> {
         return service.changeAvatar(
             userId.toRequestBody("text/plain".toMediaTypeOrNull()),
-            if (avatar != null) {
-                MultipartBody.Part.createFormData(
-                    "avatar",
-                    "avatar",
-                    avatar.asRequestBody("image/*".toMediaTypeOrNull())
-                )
-            } else {
-                null
-            }
+            avatar?.toMultipartBody("avatar")
         )
     }
 
@@ -100,10 +84,11 @@ class UsersRetrofitServiceImpl @Inject constructor(
 
     override suspend fun searchUser(
         userId: String,
+        scheduleId: String,
         searchWord: String,
         isInsert: Boolean?
     ): Response<List<Search>> {
-        return service.searchUser(userId, searchWord, isInsert)
+        return service.searchUser(userId, scheduleId, searchWord, isInsert)
     }
 
     override suspend fun deleteSearch(searchId: String?, userId: String?): Response<Unit> {
@@ -167,7 +152,8 @@ class UsersRetrofitServiceImpl @Inject constructor(
         @POST("${PATH}search")
         suspend fun searchUser(
             @Field("userId") userId: String,
-            @Field("searchWord")  searchWord: String,
+            @Field("scheduleId") scheduleId: String,
+            @Field("searchWord") searchWord: String,
             @Field("isInsert") isInsert: Boolean? = null
         ): Response<List<Search>>
 

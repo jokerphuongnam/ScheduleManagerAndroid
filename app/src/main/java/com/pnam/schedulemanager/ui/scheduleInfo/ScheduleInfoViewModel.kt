@@ -1,6 +1,6 @@
 package com.pnam.schedulemanager.ui.scheduleInfo
 
-import android.net.Uri
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pnam.schedulemanager.model.database.domain.Schedule
@@ -75,11 +75,12 @@ class ScheduleInfoViewModel @Inject constructor(
         }
     }
 
-    internal fun insertMedia(media: Uri) {
+    internal fun insertMedia(media: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val schedule = _newSchedule.value!!
                 useCase.addMultiMedia(schedule.scheduleId, mutableListOf(media))
+                getScheduleInfo()
             } catch (e: Exception) {
                 e.printStackTrace()
                 when (e) {
@@ -93,9 +94,21 @@ class ScheduleInfoViewModel @Inject constructor(
         }
     }
 
-    internal fun deleteMedia() {
+    internal fun deleteMedia(mediaId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-
+            try {
+                useCase.deleteMedia(mediaId)
+                getScheduleInfo()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                when (e) {
+                    is NoConnectivityException -> {
+                        internetError.postValue("")
+                    }
+                    else -> {
+                    }
+                }
+            }
         }
     }
 
@@ -126,4 +139,6 @@ class ScheduleInfoViewModel @Inject constructor(
             }
         }
     }
+
+    internal val isEditModeLiveData: MutableLiveData<Boolean> by lazy { MutableLiveData() }
 }

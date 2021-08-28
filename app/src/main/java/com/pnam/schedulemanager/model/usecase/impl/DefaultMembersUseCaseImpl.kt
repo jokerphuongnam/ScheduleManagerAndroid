@@ -12,14 +12,19 @@ class DefaultMembersUseCaseImpl @Inject constructor(
     override val usersRepository: UsersRepository,
     override val schedulesRepository: SchedulesRepository
 ) : MembersUseCase {
-    override fun searchUser(searchWord: String): Flow<List<Search>> {
+    override fun searchUser(searchWord: String, scheduleId: String): Flow<List<Search>> {
         return MutableStateFlow(searchWord).debounce(300).distinctUntilChanged().map {
-            usersRepository.searchUser(usersRepository.getCurrentUser(), it, null)
+            usersRepository.searchUser(usersRepository.getCurrentUser(), scheduleId, it, null)
         }
     }
 
-    override suspend fun getSearchResultUser(searchWord: String): List<Search> {
-        return usersRepository.searchUser(usersRepository.getCurrentUser(), searchWord, true)
+    override suspend fun getSearchResultUser(searchWord: String, scheduleId: String): List<Search> {
+        return usersRepository.searchUser(
+            usersRepository.getCurrentUser(),
+            scheduleId,
+            searchWord,
+            true
+        )
     }
 
     override suspend fun deleteSearch(searchId: String) {

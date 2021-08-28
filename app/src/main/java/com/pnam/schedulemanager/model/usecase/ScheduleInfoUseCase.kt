@@ -1,6 +1,6 @@
 package com.pnam.schedulemanager.model.usecase
 
-import android.net.Uri
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
@@ -22,7 +22,7 @@ interface ScheduleInfoUseCase {
 
     suspend fun getScheduleInfo(scheduleId: String): Schedule
 
-    suspend fun addMultiMedia(scheduleId: String, multiMedia: List<Uri>)
+    suspend fun addMultiMedia(scheduleId: String, multiMedia: List<Bitmap>)
 
     suspend fun deleteMedia(mediaId: String)
 

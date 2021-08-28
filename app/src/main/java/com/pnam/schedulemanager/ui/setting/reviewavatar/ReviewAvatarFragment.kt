@@ -10,7 +10,6 @@ import com.pnam.schedulemanager.databinding.FragmentReviewAvatarBinding
 import com.pnam.schedulemanager.ui.base.BaseBottomSheetDialogFragment
 import com.pnam.schedulemanager.ui.base.BaseFragment
 import com.pnam.schedulemanager.ui.base.showToastActivity
-import com.pnam.schedulemanager.ui.base.uriToBitmap
 import com.pnam.schedulemanager.ui.setting.SettingActivity
 import com.pnam.schedulemanager.ui.setting.SettingViewModel
 import com.pnam.schedulemanager.ui.setting.optionsavatar.OptionsAvatarFragment
@@ -88,9 +87,7 @@ class ReviewAvatarFragment :
             }
             (getParcelable(SettingActivity.AVATAR_BITMAP) as Bitmap?)?.let { avatarBitmap ->
                 loadAvatar(avatarBitmap)
-                requireActivity().uriToBitmap(avatarBitmap)?.let { avatarUri ->
-                    viewModel.avatar = avatarUri
-                }
+                viewModel.avatar = avatarBitmap
             }
         }
     }

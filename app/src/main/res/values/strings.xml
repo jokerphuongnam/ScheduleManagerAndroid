@@ -76,8 +76,11 @@
     <string name="create_task_success">Create task success</string>
     <string name="update_task_success">Update task success</string>
     <string name="delete_avatar_success">Delete avatar success</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="edit_profile">Edit profile</string>
     <string name="birthday_need_before_present_time">Birthday needs before the present time</string>
     <string name="cannot_edit_profile">Cannot edit profile</string>
+    <string name="search_user">Search user</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="snooze">Snooze</string>
 </resources>

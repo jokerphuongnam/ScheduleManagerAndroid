@@ -1,5 +1,6 @@
 package com.pnam.schedulemanager.model.repository.impl
 
+import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.database.local.CurrentUser
@@ -11,7 +12,6 @@ import com.pnam.schedulemanager.utils.RetrofitUtils.BAD_REQUEST
 import com.pnam.schedulemanager.utils.RetrofitUtils.CONFLICT
 import com.pnam.schedulemanager.utils.RetrofitUtils.NOT_FOUND
 import com.pnam.schedulemanager.utils.RetrofitUtils.SUCCESS
-import java.io.File
 import javax.inject.Inject
 
 class DefaultUsersRepositoryImpl @Inject constructor(
@@ -67,7 +67,7 @@ class DefaultUsersRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun changeAvatar(userId: String, avatar: File?): User {
+    override suspend fun changeAvatar(userId: String, avatar: Bitmap?): User {
         val response = network.changeAvatar(userId, avatar)
         val responseCode = response.code()
         when {
@@ -137,7 +137,7 @@ class DefaultUsersRepositoryImpl @Inject constructor(
         password: String?,
         loginId: String?,
         loginType: String?,
-        avatar: File?
+        avatar: Bitmap?
     ): User {
         val response = network.register(user, email, password, loginId, loginType, avatar)
         val responseCode = response.code()
@@ -181,10 +181,11 @@ class DefaultUsersRepositoryImpl @Inject constructor(
 
     override suspend fun searchUser(
         userId: String,
+        scheduleId: String,
         searchWord: String,
         isInsert: Boolean?
     ): List<Search> {
-        val response = network.searchUser(userId, searchWord, isInsert)
+        val response = network.searchUser(userId, scheduleId, searchWord, isInsert)
         val responseCode = response.code()
         when {
             responseCode.equals(SUCCESS) -> {

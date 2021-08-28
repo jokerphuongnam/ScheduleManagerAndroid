@@ -48,11 +48,14 @@ class MembersDialog : BaseDialogFragment<DialogMembersBinding, MembersViewModel>
             scaleType = ImageView.ScaleType.FIT_CENTER
             setPadding(36)
         }
+        searchView.queryHint = "${getString(R.string.search_user)}…"
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return if (query.isNotEmpty()) {
                     searchView.clearFocus()
-                    viewModel.submitSearch(query)
+                    activityViewModel.newSchedule.value?.scheduleId?.let { scheduleId ->
+                        viewModel.submitSearch(query, scheduleId)
+                    }
                     true
                 } else {
                     false
@@ -62,7 +65,9 @@ class MembersDialog : BaseDialogFragment<DialogMembersBinding, MembersViewModel>
             override fun onQueryTextChange(newText: String): Boolean {
                 binding.type = ShowTypeMember.SEARCH
                 return if (newText.isNotEmpty()) {
-                    viewModel.searchUser(newText)
+                    activityViewModel.newSchedule.value?.scheduleId?.let { scheduleId ->
+                        viewModel.searchUser(newText, scheduleId)
+                    }
                     true
                 } else {
                     searchesAdapter.submitList(mutableListOf())
