@@ -45,7 +45,8 @@
                         android:textAllCaps="true"
                         android:textColor="@color/primary_color"
                         android:textSize="32sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:transitionName="title"/>
                 </androidx.appcompat.widget.Toolbar>
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
