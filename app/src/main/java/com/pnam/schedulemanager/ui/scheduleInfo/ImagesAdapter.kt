@@ -41,6 +41,7 @@ class ImagesAdapter(
                         }
                         true
                     }
+                    popupMenu.show()
                 }
                 true
             }
