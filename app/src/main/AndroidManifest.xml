@@ -49,6 +49,10 @@
             android:name=".ui.editprofile.EditProfileActivity"
             android:label="Change Profile" />
 
+        <activity
+            android:name=".ui.ring.RingActivity"
+            android:excludeFromRecents="true" />
+
         <receiver android:name=".foreground.AlarmBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

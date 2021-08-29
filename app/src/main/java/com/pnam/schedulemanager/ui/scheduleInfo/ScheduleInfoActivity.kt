@@ -129,6 +129,90 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         }
     }
 
+    private fun scheduleAlarm(schedule: Schedule) {
+        val alarmBroadCastIntent = Intent(applicationContext, AlarmBroadcastReceiver::class.java)
+        alarmBroadCastIntent.putParcelableExtra(AlarmBroadcastReceiver.SCHEDULE, schedule)
+        val scheduleAlarm = schedule.scheduleTime.toCalendar
+        scheduleAlarm[Calendar.SECOND] = 0
+        scheduleAlarm[Calendar.MILLISECOND] = 0
+        val alarmPendingIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            -schedule.scheduleTime.toInt(),
+            alarmBroadCastIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        (getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            scheduleAlarm.timeInMillis,
+            alarmPendingIntent
+        )
+    }
+
+    private fun setupViewModel() {
+        viewModel.apply {
+            newSchedule.observe { schedule ->
+                binding.schedule = schedule
+                setBackgroundColor(schedule.color)
+                tasksInfoAdapter.submitList(
+                    schedule.tasks.sortedWith(
+                        compareBy(
+                            { it.finishBy },
+                            { it.createAt }
+                        )
+                    ).toMutableList()
+                )
+                imagesAdapter.submitList(schedule.images.toMutableList())
+                setActionBarAttr("${getString(R.string.edit_schedule)} ${schedule.title}")
+                colorsAdapter.selectedColor = ColorsAdapter.ColorElement.values().first {
+                    it.rawValue == schedule.color
+                }
+                if (schedule.scheduleId.isEmpty()) {
+                    binding.cancel.visibility = View.GONE
+                } else {
+                    binding.cancel.visibility = View.VISIBLE
+                }
+                tasksInfoAdapter.notifyDataSetChanged()
+                val scheduleAlarm = schedule.scheduleTime.toCalendar
+                scheduleAlarm[Calendar.SECOND] = 0
+                scheduleAlarm[Calendar.MILLISECOND] = 0
+                if (scheduleAlarm.timeInMillis > System.currentTimeMillis()) {
+                    scheduleAlarm(schedule)
+                }
+            }
+            updateSchedule.observe { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        binding.isEditMode = false
+                    }
+                    is Resource.Error -> {
+                        AlertDialog.Builder(this@ScheduleInfoActivity)
+                            .setMessage(R.string.has_error_when_save_schedule)
+                    }
+                }
+            }
+            toggleTaskLiveData.observe {
+                tasksInfoAdapter.submitList(
+                    viewModel.newSchedule.value?.tasks?.toMutableList() ?: emptyList()
+                )
+            }
+            isEditModeLiveData.observe { isEditMode ->
+                if (isEditMode == true) {
+                    binding.schedule = viewModel.newSchedule.value
+                    binding.background.setBackgroundColor(
+                        Color.parseColor(
+                            binding.schedule?.color ?: ColorsAdapter.ColorElement.YELLOW.rawValue
+                        )
+                    )
+                }
+                tasksInfoAdapter.isEditMode = isEditMode
+                binding.isEditMode = isEditMode
+            }
+        }
+    }
+
     private fun setupBinding() {
         setSupportActionBar(binding.addToolBar)
         val scheduleReceiver: Schedule? = intent.getParcelableExtra(SCHEDULE)
@@ -155,6 +239,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 ) {
                     return@setOnMenuItemClickListener false
                 }
+                viewModel.isEditModeLiveData.value = false
                 when (it.itemId) {
                     R.id.image_choose -> {
                         imageChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -185,7 +270,6 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
             cancel.setOnClickListener {
                 viewModel.newSchedule.value?.let { s ->
                     schedule = s
-                    isEditMode = false
                     binding.background.setBackgroundColor(Color.parseColor(s.color))
                 }
                 viewModel.isEditModeLiveData.value = false
@@ -236,93 +320,14 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                         putString(COLOR, schedule.color)
                     }
                 }.show(supportFragmentManager, MembersDialog::class.simpleName)
-            }
-        }
-    }
-
-    private fun scheduleAlarm(schedule: Schedule) {
-        val alarmBroadCastIntent = Intent(applicationContext, AlarmBroadcastReceiver::class.java)
-        alarmBroadCastIntent.putParcelableExtra(AlarmBroadcastReceiver.SCHEDULE, schedule)
-        val scheduleAlarm = schedule.scheduleTime.toCalendar
-        scheduleAlarm[Calendar.SECOND] = 0
-        scheduleAlarm[Calendar.MILLISECOND] = 0
-        val alarmPendingIntent = PendingIntent.getBroadcast(
-            applicationContext,
-            -schedule.scheduleTime.toInt(),
-            alarmBroadCastIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-        (getSystemService(Context.ALARM_SERVICE) as AlarmManager).setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            scheduleAlarm.timeInMillis,
-            alarmPendingIntent
-        )
-    }
-
-    private fun setupViewModel() {
-        viewModel.apply {
-            newSchedule.observe { schedule ->
-                binding.schedule = schedule
-                setBackgroundColor(schedule.color)
-                tasksInfoAdapter.submitList(
-                    schedule.tasks.sortedWith(
-                        compareBy(
-                            { it.finishBy },
-                            { it.createAt }
-                        )
-                    ).toMutableList()
-                )
-                imagesAdapter.submitList(schedule.images.toMutableList())
-                setActionBarAttr("${getString(R.string.edit_schedule)} ${schedule.title}")
-                colorsAdapter.selectedColor = ColorsAdapter.ColorElement.values().first {
-                    it.rawValue == schedule.color
-                }
-                if (schedule.scheduleId.isEmpty()) {
-                    binding.cancel.visibility = View.GONE
-                } else {
-                    binding.cancel.visibility = View.VISIBLE
-                }
                 viewModel.isEditModeLiveData.value = false
-                tasksInfoAdapter.notifyDataSetChanged()
-                scheduleAlarm(schedule)
-            }
-            updateSchedule.observe { resource ->
-                when (resource) {
-                    is Resource.Loading -> {
-
-                    }
-                    is Resource.Success -> {
-                        binding.isEditMode = false
-                    }
-                    is Resource.Error -> {
-                        AlertDialog.Builder(this@ScheduleInfoActivity)
-                            .setMessage(R.string.has_error_when_save_schedule)
-                    }
-                }
-            }
-            toggleTaskLiveData.observe {
-                tasksInfoAdapter.submitList(
-                    viewModel.newSchedule.value?.tasks?.toMutableList() ?: emptyList()
-                )
-            }
-            isEditModeLiveData.observe { isEditMode ->
-                if (isEditMode == true) {
-                    binding.schedule = viewModel.newSchedule.value
-                    binding.background.setBackgroundColor(
-                        Color.parseColor(
-                            binding.schedule?.color ?: ColorsAdapter.ColorElement.YELLOW.rawValue
-                        )
-                    )
-                }
-                tasksInfoAdapter.isEditMode = isEditMode
-                binding.isEditMode = isEditMode
             }
         }
     }
 
     override fun createUI() {
-        setupBinding()
         setupViewModel()
+        setupBinding()
         noInternetError()
         recyclerViewSetUp()
     }

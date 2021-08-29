@@ -34,8 +34,13 @@ class RegisterViewModel @Inject constructor(
         _registerLiveData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val user =
-                    useCase.register(currentUser.value!!, email, password, null, null, avatar)
+                val user = useCase.register(
+                    currentUser.value!!,
+                    email,
+                    password,
+                    null,
+                    null, avatar
+                )
                 _registerLiveData.postValue(Resource.Success(user))
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -58,15 +63,14 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val (loginId, loginType) = loginInfo!!
-                val user =
-                    useCase.register(
-                        currentUser.value!!,
-                        null,
-                        null,
-                        loginId,
-                        loginType.rawValue,
-                        avatar
-                    )
+                val user = useCase.register(
+                    currentUser.value!!,
+                    null,
+                    null,
+                    loginId,
+                    loginType.rawValue,
+                    avatar
+                )
                 _registerLiveData.postValue(Resource.Success(user))
             } catch (e: Exception) {
                 e.printStackTrace()

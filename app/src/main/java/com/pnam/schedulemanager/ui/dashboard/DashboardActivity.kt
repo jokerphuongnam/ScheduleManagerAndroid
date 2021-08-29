@@ -112,7 +112,10 @@ class DashboardActivity : BaseActivity<ActivityDashboardBinding, DashboardViewMo
                         clearAlarm()
                         val currentTime = System.currentTimeMillis()
                         resource.data.filter { schedule ->
-                            schedule.scheduleTime > currentTime
+                            val scheduleAlarm = schedule.scheduleTime.toCalendar
+                            scheduleAlarm[Calendar.SECOND] = 0
+                            scheduleAlarm[Calendar.MILLISECOND] = 0
+                            scheduleAlarm.timeInMillis > currentTime
                         }.forEach { schedule ->
                             scheduleAlarm(schedule)
                         }

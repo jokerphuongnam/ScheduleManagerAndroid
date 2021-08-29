@@ -30,7 +30,7 @@ class AlarmService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent != null) {
             val notificationIntent = Intent(applicationContext, RingActivity::class.java)
-            val pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0)
+            val pendingIntent = PendingIntent.getActivity(applicationContext, 0, notificationIntent, 0)
             intent.getParcelableExtra<Schedule>(AlarmBroadcastReceiver.SCHEDULE)?.let { schedule ->
                 notificationIntent.putExtra(AlarmBroadcastReceiver.SCHEDULE, schedule)
                 val alarmTitle = String.format("%s Schedule", schedule.title)

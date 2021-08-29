@@ -1,5 +1,7 @@
 package com.pnam.schedulemanager.ui.ring
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import androidx.activity.viewModels
 import com.pnam.schedulemanager.R
@@ -22,6 +24,12 @@ class RingActivity : BaseActivity<ActivityRingBinding, BaseViewModel>(
             applicationContext.stopService(intent)
             finish()
         }
+
+
+        val rotateAnimation = ObjectAnimator.ofFloat(binding.clock, "rotation", 0f, 20f, 0f, -20f, 0f)
+        rotateAnimation.repeatCount = ValueAnimator.INFINITE
+        rotateAnimation.duration = 800
+        rotateAnimation.start()
     }
 
     override val viewModel: BaseViewModel by viewModels()
