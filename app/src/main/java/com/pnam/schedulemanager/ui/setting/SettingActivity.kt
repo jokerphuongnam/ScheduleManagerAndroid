@@ -26,8 +26,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class SettingActivity :
-    BaseActivity<ActivitySettingBinding, SettingViewModel>(R.layout.activity_setting) {
+class SettingActivity : BaseActivity<ActivitySettingBinding, SettingViewModel>(
+    R.layout.activity_setting
+) {
     internal val imageChoose: ActivityResultLauncher<Intent> = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->

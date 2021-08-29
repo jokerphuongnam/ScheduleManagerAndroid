@@ -4,8 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.usecase.SettingUseCase
-import com.pnam.schedulemanager.throwable.NoConnectivityException
-import com.pnam.schedulemanager.throwable.NotLoginException
 import com.pnam.schedulemanager.ui.base.BaseViewModel
 import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel

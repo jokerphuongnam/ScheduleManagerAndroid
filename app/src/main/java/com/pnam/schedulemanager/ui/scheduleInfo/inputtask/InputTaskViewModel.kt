@@ -15,7 +15,6 @@ import javax.inject.Inject
 class InputTaskViewModel @Inject constructor(
     private val useCase: InputTaskUseCase
 ) : BaseViewModel() {
-
     private val _saveTaskLiveData: MutableLiveData<Resource<SaveTaskType>> by lazy { MutableLiveData() }
     internal val saveTaskLiveData: MutableLiveData<Resource<SaveTaskType>> get() = _saveTaskLiveData
 

@@ -10,7 +10,9 @@ import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ItemMemberBinding
 import com.pnam.schedulemanager.model.database.domain.Member
 
-class MembersAdapter : ListAdapter<Member, MembersAdapter.MemberViewHolder>(DIFF_CALLBACK) {
+class MembersAdapter : ListAdapter<Member, MembersAdapter.MemberViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemberViewHolder {
         return MemberViewHolder.create(parent, viewType)
     }

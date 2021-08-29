@@ -24,8 +24,9 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class RegisterActivity :
-    BaseActivity<ActivityRegisterBinding, RegisterViewModel>(R.layout.activity_register) {
+class RegisterActivity : BaseActivity<ActivityRegisterBinding, RegisterViewModel>(
+    R.layout.activity_register
+) {
     private val imageChoose: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {

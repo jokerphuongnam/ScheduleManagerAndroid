@@ -1,11 +1,11 @@
 package com.pnam.schedulemanager.ui.setting.profile
 
 import android.content.Intent
-import androidx.fragment.app.viewModels
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.DialogProfileBinding
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.ui.base.BaseDialogFragment
+import com.pnam.schedulemanager.ui.base.BaseViewModel
 import com.pnam.schedulemanager.ui.base.putParcelableExtra
 import com.pnam.schedulemanager.ui.base.slideHActivity
 import com.pnam.schedulemanager.ui.editprofile.EditProfileActivity
@@ -15,7 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
-class ProfileDialog : BaseDialogFragment<DialogProfileBinding, ProfileViewModel>(
+class ProfileDialog : BaseDialogFragment<DialogProfileBinding, BaseViewModel>(
     R.layout.dialog_profile
 ) {
     private fun setupSize() {
@@ -63,5 +63,6 @@ class ProfileDialog : BaseDialogFragment<DialogProfileBinding, ProfileViewModel>
         setupToolbar()
     }
 
-    override val viewModel: ProfileViewModel by viewModels()
+    @Suppress("IMPLICIT_NOTHING_TYPE_ARGUMENT_IN_RETURN_POSITION")
+    override val viewModel by lazy { TODO() }
 }

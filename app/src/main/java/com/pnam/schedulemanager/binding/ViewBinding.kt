@@ -7,7 +7,6 @@ import coil.load
 import coil.size.Scale
 import coil.transform.CircleCropTransformation
 import com.pnam.schedulemanager.R
-import com.pnam.schedulemanager.ui.scheduleInfo.ImagesAdapter
 import com.pnam.schedulemanager.utils.RetrofitUtils.getMediaUrl
 
 @BindingAdapter("circle_image_from_url")

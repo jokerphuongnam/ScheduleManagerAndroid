@@ -9,15 +9,17 @@ import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ForgotPasswordActivity: BaseActivity<ActivityForgotPassowdBinding, ForgotPasswordViewModel>(R.layout.activity_forgot_passowd){
+class ForgotPasswordActivity : BaseActivity<ActivityForgotPassowdBinding, ForgotPasswordViewModel>(
+    R.layout.activity_forgot_passowd
+) {
     override fun createUI() {
         binding.apply {
             recoverPasswordBtn.setOnClickListener {
                 viewModel.recoverPassword(username.editText!!.text.toString())
             }
         }
-        viewModel.changePasswordLiveData.observe{resource ->
-            when(resource){
+        viewModel.changePasswordLiveData.observe { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                     binding.recoverPasswordError.visibility = View.INVISIBLE
                 }

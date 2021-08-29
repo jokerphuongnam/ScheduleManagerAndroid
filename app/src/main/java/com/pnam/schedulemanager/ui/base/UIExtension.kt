@@ -15,7 +15,6 @@ fun Fragment.showToastActivity(@StringRes message: Int, duration: Int = Toast.LE
     Toast.makeText(requireActivity(), message, duration).show()
 }
 
-
 fun Activity.slideHActivity(intent: Intent, bundle: Bundle? = null) {
     intent.putParcelableExtra(BaseActivity.START_TYPE, StartType.SLIDE_HORIZONTAL)
     startActivity(intent, bundle)
@@ -42,7 +41,6 @@ fun Intent.putParcelableExtra(key: String, value: Parcelable) {
 internal enum class StartType : Parcelable {
     SLIDE_HORIZONTAL, SLIDE_SECOND
 }
-
 
 var TextInputLayout.text: String
     get() {

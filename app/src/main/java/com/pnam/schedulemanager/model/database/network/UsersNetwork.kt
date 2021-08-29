@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import com.pnam.schedulemanager.model.database.domain.Search
 import com.pnam.schedulemanager.model.database.domain.User
 import retrofit2.Response
-import java.io.File
 import javax.inject.Singleton
 
 @Singleton

@@ -16,13 +16,14 @@ class TasksAdapter(
     private val deleteCallBack: (Task) -> Unit,
     private val toggleCallBack: (Boolean, Task) -> Unit,
     private val editTaskCallback: (Task) -> Unit
-) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(DIFF_CALLBACK) {
-
+) : ListAdapter<Task, TasksAdapter.TaskViewHolder>(
+    DIFF_CALLBACK
+) {
     var isEditMode: Boolean = false
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder =
         TaskViewHolder.create(parent, viewType, deleteCallBack, toggleCallBack, editTaskCallback)

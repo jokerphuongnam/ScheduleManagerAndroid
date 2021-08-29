@@ -5,18 +5,16 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBar
 import androidx.core.view.isVisible
-import com.pnam.schedulemanager.throwable.NoErrorException
 import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.databinding.ActivityChangePasswordBinding
 import com.pnam.schedulemanager.ui.base.BaseActivity
 import com.pnam.schedulemanager.utils.Resource
-import com.pnam.schedulemanager.utils.passwordRegex
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ChangePasswordActivity :
-    BaseActivity<ActivityChangePasswordBinding, ChangePasswordViewModel>(R.layout.activity_change_password) {
-
+class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding, ChangePasswordViewModel>(
+    R.layout.activity_change_password
+) {
     private lateinit var actionBar: ActionBar
 
     private fun setUpActionBar() {

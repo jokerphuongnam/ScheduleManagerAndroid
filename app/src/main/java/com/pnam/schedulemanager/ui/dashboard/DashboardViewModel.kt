@@ -20,7 +20,6 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val useCase: DashboardUseCase
 ) : BaseViewModel() {
-
     private val _scheduleLiveData: MutableLiveData<Resource<List<Schedule>>> by lazy {
         MutableLiveData<Resource<List<Schedule>>>()
     }

@@ -13,8 +13,9 @@ import com.pnam.schedulemanager.model.database.domain.Media
 
 class ImagesAdapter(
     private val deleteImage: (Media) -> Unit
-) : ListAdapter<Media, ImagesAdapter.ImageViewHolder>(DIFF_CALLBACK) {
-
+) : ListAdapter<Media, ImagesAdapter.ImageViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder =
         ImageViewHolder.create(parent, viewType, deleteImage)
 

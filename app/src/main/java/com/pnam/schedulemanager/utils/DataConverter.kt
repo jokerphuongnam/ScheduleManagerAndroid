@@ -4,12 +4,6 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-/**
- * for field have type not support for room, need class data converter
- * here set up type:
- * - to json (String) when save room
- * - to object when find from room
- * */
 class DataConverter {
     private val gson: Gson by lazy { Gson() }
 

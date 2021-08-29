@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.pnam.schedulemanager.utils.RetrofitUtils
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -30,7 +31,9 @@ open class Media(
     @ColumnInfo(name = "media_type")
     var mediaType: MediaType = MediaType.IMAGE
 
-    enum class MediaType(val rawValue: Int) {
-        IMAGE(0), AUDIO(1), VIDEO(2);
+    enum class MediaType(val rawValue: String) {
+        IMAGE(RetrofitUtils.IMAGES),
+        AUDIO(RetrofitUtils.AUDIOS),
+        VIDEO(RetrofitUtils.VIDEOS);
     }
 }

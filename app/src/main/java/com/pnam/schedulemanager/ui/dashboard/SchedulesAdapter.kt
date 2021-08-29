@@ -1,11 +1,9 @@
 package com.pnam.schedulemanager.ui.dashboard
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -16,9 +14,9 @@ import com.pnam.schedulemanager.model.database.domain.Schedule
 
 class SchedulesAdapter(
     private val itemClick: (Schedule, List<View>) -> Unit
-) :
-    ListAdapter<Schedule, SchedulesAdapter.NoteViewHolder>(DIFF_CALLBACK) {
-
+) : ListAdapter<Schedule, SchedulesAdapter.NoteViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         holder.bind(getItem(position))
     }

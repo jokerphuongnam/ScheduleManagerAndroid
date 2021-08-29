@@ -14,8 +14,9 @@ import com.pnam.schedulemanager.model.database.domain.Search
 class SearchesAdapter(
     private val deleteItem: (Search) -> Unit,
     private val searchItem: (Search) -> Unit
-) : ListAdapter<Search, SearchesAdapter.SearchViewHolder>(DIFF_CALLBACK) {
-
+) : ListAdapter<Search, SearchesAdapter.SearchViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         return SearchViewHolder.create(parent, viewType, deleteItem, searchItem)
     }

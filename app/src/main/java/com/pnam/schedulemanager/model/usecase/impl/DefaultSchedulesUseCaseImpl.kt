@@ -1,7 +1,6 @@
 package com.pnam.schedulemanager.model.usecase.impl
 
 import com.pnam.schedulemanager.model.database.domain.Schedule
-import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
 import com.pnam.schedulemanager.model.repository.UsersRepository
 import com.pnam.schedulemanager.model.usecase.SchedulesUseCase
@@ -21,8 +20,9 @@ class DefaultSchedulesUseCaseImpl @Inject constructor(
     override suspend fun deleteTask(taskId: String) =
         schedulesRepository.deleteTask(taskId)
 
-    override suspend fun deleteSchedule(schedule: Schedule) = usersRepository.getCurrentUser().let { userId ->
-        schedule.userId = userId
-        schedulesRepository.deleteSchedule(schedule)
-    }
+    override suspend fun deleteSchedule(schedule: Schedule) =
+        usersRepository.getCurrentUser().let { userId ->
+            schedule.userId = userId
+            schedulesRepository.deleteSchedule(schedule)
+        }
 }

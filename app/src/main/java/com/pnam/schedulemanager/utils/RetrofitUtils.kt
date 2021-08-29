@@ -14,6 +14,7 @@ object RetrofitUtils {
     }
 
     const val IMAGES: String = "images"
-    const val SOUNDS: String = "sounds"
+    const val AUDIOS: String = "audios"
+    const val VIDEOS: String = "videos"
     const val AVATAR: String = "avatar"
 }

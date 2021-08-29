@@ -13,13 +13,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ForgotPasswordViewModel @Inject constructor(private val useCase: ForgotPasswordUseCase): BaseViewModel() {
-
+class ForgotPasswordViewModel @Inject constructor(
+    private val useCase: ForgotPasswordUseCase
+) : BaseViewModel() {
     private val _changePasswordLiveData: MutableLiveData<Resource<Int>> by lazy { MutableLiveData<Resource<Int>>() }
 
     internal val changePasswordLiveData: MutableLiveData<Resource<Int>> get() = _changePasswordLiveData
 
-    fun recoverPassword(email: String){
+    fun recoverPassword(email: String) {
         _changePasswordLiveData.postValue(Resource.Loading())
         viewModelScope.launch(Dispatchers.IO) {
             try {

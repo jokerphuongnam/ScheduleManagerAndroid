@@ -12,8 +12,9 @@ import com.pnam.schedulemanager.model.database.domain.Search
 
 class SearchResultsAdapter(
     private val selectedItem: (Search) -> Unit
-) : ListAdapter<Search, SearchResultsAdapter.SearchResultViewHolder>(DIFF_CALLBACK) {
-
+) : ListAdapter<Search, SearchResultsAdapter.SearchResultViewHolder>(
+    DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchResultViewHolder {
         return SearchResultViewHolder.create(parent, viewType, selectedItem)
     }

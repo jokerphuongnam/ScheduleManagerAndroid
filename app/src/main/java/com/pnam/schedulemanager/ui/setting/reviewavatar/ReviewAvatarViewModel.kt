@@ -15,7 +15,6 @@ import javax.inject.Inject
 class ReviewAvatarViewModel @Inject constructor(
     private val useCase: ReviewAvatarUseCase
 ) : BaseViewModel() {
-
     internal lateinit var avatar: Bitmap
     internal lateinit var userId: String
 

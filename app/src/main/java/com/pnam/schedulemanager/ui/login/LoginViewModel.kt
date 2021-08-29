@@ -15,7 +15,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val useCase: LoginUseCase) : BaseViewModel() {
+class LoginViewModel @Inject constructor(
+    private val useCase: LoginUseCase
+) : BaseViewModel() {
     private val _login: MutableLiveData<Resource<User>> by lazy {
         MutableLiveData<Resource<User>>()
     }

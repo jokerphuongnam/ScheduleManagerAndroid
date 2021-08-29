@@ -1,7 +1,6 @@
 package com.pnam.schedulemanager.model.usecase
 
 import com.pnam.schedulemanager.model.database.domain.Schedule
-import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
 import com.pnam.schedulemanager.model.repository.UsersRepository

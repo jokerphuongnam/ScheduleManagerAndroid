@@ -22,9 +22,9 @@ import java.util.*
 
 @AndroidEntryPoint
 @ExperimentalCoroutinesApi
-class EditProfileActivity :
-    BaseActivity<ActivityEditProfileBinding, EditProfileViewModel>(R.layout.activity_edit_profile) {
-
+class EditProfileActivity : BaseActivity<ActivityEditProfileBinding, EditProfileViewModel>(
+    R.layout.activity_edit_profile
+) {
     private val datePickerCallBack: DatePickerDialog.OnDateSetListener by lazy {
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
             val calendar = Calendar.getInstance()

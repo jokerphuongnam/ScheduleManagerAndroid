@@ -2,7 +2,6 @@ package com.pnam.schedulemanager.ui.changepassword
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.pnam.schedulemanager.model.database.domain.User
 import com.pnam.schedulemanager.model.usecase.ChangePasswordUseCase
 import com.pnam.schedulemanager.throwable.NoConnectivityException
 import com.pnam.schedulemanager.throwable.NotFoundException
@@ -11,7 +10,6 @@ import com.pnam.schedulemanager.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
 import javax.inject.Inject
 
 @HiltViewModel

@@ -8,10 +8,10 @@ import okio.source
 import java.io.IOException
 import java.io.InputStream
 
-
-class FileRequestBody(private val inputStream: InputStream, private val type: MediaType?) :
-    RequestBody() {
-
+class FileRequestBody(
+    private val inputStream: InputStream,
+    private val type: MediaType?
+) : RequestBody() {
     override fun contentType(): MediaType? {
         return type
     }
@@ -28,9 +28,7 @@ class FileRequestBody(private val inputStream: InputStream, private val type: Me
             source = inputStream.source()
             sink.writeAll(source)
         } catch (e: Exception) {
-            if (source != null) {
-                source.close()
-            }
+            source?.close()
         }
     }
 }

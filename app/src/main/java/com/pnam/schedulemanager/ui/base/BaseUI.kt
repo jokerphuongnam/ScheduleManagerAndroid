@@ -2,8 +2,6 @@ package com.pnam.schedulemanager.ui.base
 
 import android.animation.ValueAnimator
 import android.app.ProgressDialog
-import android.content.Intent
-import android.os.Parcelable
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes

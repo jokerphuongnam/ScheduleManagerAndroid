@@ -18,7 +18,6 @@ import javax.inject.Inject
 class ScheduleInfoViewModel @Inject constructor(
     private val useCase: ScheduleInfoUseCase
 ) : BaseViewModel() {
-
     internal fun initSchedule(scheduleId: String?) {
         if (scheduleId == null) {
             _newSchedule.postValue(Schedule())

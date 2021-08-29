@@ -54,9 +54,6 @@ abstract class AppBindsModules {
     abstract fun getLoginUseCase(useCase: DefaultLoginUseCaseImpl): LoginUseCase
 
     @Binds
-    abstract fun getEditNoteUseCase(useCase: DefaultEditScheduleUseCaseImpl): EditScheduleUseCase
-
-    @Binds
     abstract fun getNoteInfoUseCase(useCase: DefaultScheduleInfoUseCaseImpl): ScheduleInfoUseCase
 
     @Binds

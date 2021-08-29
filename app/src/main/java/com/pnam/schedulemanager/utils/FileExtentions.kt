@@ -6,7 +6,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.ByteArrayOutputStream
 
-
 fun List<Bitmap>.toMultipartBodies(
     partName: String
 ): List<MultipartBody.Part> {

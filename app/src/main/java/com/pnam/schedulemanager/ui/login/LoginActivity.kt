@@ -22,8 +22,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(R.layout.activity_login) {
-
+class LoginActivity : BaseActivity<ActivityLoginBinding, LoginViewModel>(
+    R.layout.activity_login
+) {
     private val loginClick: View.OnClickListener by lazy {
         View.OnClickListener {
             viewModel.loginLoginId(

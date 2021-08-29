@@ -16,7 +16,6 @@ import com.pnam.schedulemanager.utils.RetrofitUtils.INTERNAL_SERVER_ERROR
 import com.pnam.schedulemanager.utils.RetrofitUtils.NOT_FOUND
 import com.pnam.schedulemanager.utils.RetrofitUtils.SUCCESS
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.io.File
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi

@@ -5,7 +5,6 @@ import com.pnam.schedulemanager.R
 import com.pnam.schedulemanager.throwable.NoErrorException
 import java.util.*
 
-
 @Throws(NoErrorException::class)
 @StringRes
 fun String.usernameRegex(): Int = when {

@@ -32,8 +32,9 @@ import java.util.*
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class DashboardActivity :
-    BaseActivity<ActivityDashboardBinding, DashboardViewModel>(R.layout.activity_dashboard) {
+class DashboardActivity : BaseActivity<ActivityDashboardBinding, DashboardViewModel>(
+    R.layout.activity_dashboard
+) {
     private val schedulesAdapter: SchedulesAdapter by lazy {
         SchedulesAdapter(selectedItem)
     }

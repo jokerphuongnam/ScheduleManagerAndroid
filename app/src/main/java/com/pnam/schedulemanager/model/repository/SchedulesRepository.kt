@@ -5,7 +5,6 @@ import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
-import java.io.File
 import javax.inject.Singleton
 
 @Singleton
