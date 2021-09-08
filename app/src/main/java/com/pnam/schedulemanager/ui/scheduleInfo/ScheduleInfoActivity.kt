@@ -265,7 +265,6 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         binding.apply {
             tabWrap.setOnMenuItemClickListener {
                 if (
-                    binding.isEditMode == false ||
                     viewModel.newSchedule.value?.scheduleId?.isEmpty() == true
                 ) {
                     return@setOnMenuItemClickListener false

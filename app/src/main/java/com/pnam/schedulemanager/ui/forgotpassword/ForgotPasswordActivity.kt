@@ -13,6 +13,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPassowdBinding, Forgot
     R.layout.activity_forgot_passowd
 ) {
     override fun createUI() {
+        setSupportActionBar(binding.toolbar)
         binding.apply {
             recoverPasswordBtn.setOnClickListener {
                 viewModel.recoverPassword(username.editText!!.text.toString())
