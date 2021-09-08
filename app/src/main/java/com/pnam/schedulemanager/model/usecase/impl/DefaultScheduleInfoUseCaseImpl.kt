@@ -1,6 +1,8 @@
 package com.pnam.schedulemanager.model.usecase.impl
 
 import android.graphics.Bitmap
+import android.net.Uri
+import com.pnam.schedulemanager.model.database.domain.Media
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
@@ -44,15 +46,26 @@ class DefaultScheduleInfoUseCaseImpl @Inject constructor(
             multiMedia
         )
 
+    override suspend fun addFiles(scheduleId: String, uris: List<Uri>) {
+        schedulesRepository.addFiles(
+            scheduleId,
+            usersRepository.getCurrentUser(),
+            uris
+        )
+    }
+
+    override suspend fun downloadFile(media: Media) {
+        schedulesRepository.downloadFile(media)
+    }
+
     override suspend fun deleteMedia(mediaId: String) = schedulesRepository.deleteMedia(mediaId)
 
     override suspend fun toggleTask(task: Task, isFinish: Boolean) {
-        schedulesRepository.updateTask(task.apply {
-            finishBy = if (isFinish) {
-                usersRepository.getCurrentUser()
-            } else {
-                ""
-            }
-        })
+        task.finishBy = if (isFinish) {
+            usersRepository.getCurrentUser()
+        } else {
+            ""
+        }
+        schedulesRepository.updateTask(task)
     }
 }

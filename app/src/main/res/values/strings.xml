@@ -83,4 +83,8 @@
     <string name="search_user">Search user</string>
     <string name="dismiss">Dismiss</string>
     <string name="snooze">Snooze</string>
+    <string name="take_file_by_storage">Take file by storage</string>
+    <string name="add_new_file">Add new file</string>
+    <string name="start_download">Start download  %1$s</string>
+    <string name="error_download">Error download</string>
 </resources>

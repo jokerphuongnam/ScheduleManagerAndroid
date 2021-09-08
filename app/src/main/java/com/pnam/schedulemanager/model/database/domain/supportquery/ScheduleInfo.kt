@@ -31,6 +31,8 @@ data class ScheduleInfo(
         schedule.images = multiMedia.filter { media -> media.equals(Media.MediaType.IMAGE) }
         schedule.videos = multiMedia.filter { media -> media.equals(Media.MediaType.VIDEO) }
         schedule.audios = multiMedia.filter { media -> media.equals(Media.MediaType.AUDIO) }
+        schedule.applications =
+            multiMedia.filter { media -> media.equals(Media.MediaType.APPLICATION) }
         return schedule
     }
 }

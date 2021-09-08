@@ -1,8 +1,10 @@
 package com.pnam.schedulemanager.ui.scheduleInfo
 
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.pnam.schedulemanager.model.database.domain.Media
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.usecase.ScheduleInfoUseCase
@@ -89,6 +91,40 @@ class ScheduleInfoViewModel @Inject constructor(
                     else -> {
                     }
                 }
+            }
+        }
+    }
+
+    internal fun insertFile(uri: Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val schedule = _newSchedule.value!!
+                useCase.addFiles(schedule.scheduleId, mutableListOf(uri))
+                getScheduleInfo()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                when (e) {
+                    is NoConnectivityException -> {
+                        internetError.postValue("")
+                    }
+                    else -> {
+                    }
+                }
+            }
+        }
+    }
+
+    private val _downloadMedia: MutableLiveData<Resource<String>> by lazy { MutableLiveData() }
+    internal val downloadMedia: MutableLiveData<Resource<String>> get() = _downloadMedia
+
+    internal fun downloadFile(media: Media) {
+        _downloadMedia.postValue(Resource.Loading())
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                useCase.downloadFile(media)
+                _downloadMedia.postValue(Resource.Success(media.mediaName))
+            } catch (e: Exception) {
+                _downloadMedia.postValue(Resource.Error(e.message ?: ""))
             }
         }
     }

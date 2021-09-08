@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="isEditMode"
+            type="Boolean" />
+
+        <variable
+            name="file"
+            type="com.pnam.schedulemanager.model.database.domain.Media" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_files" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:text="@{file.mediaName}"
+            android:textColor="?attr/blackLightWhiteNightColor" />
+
+
+        <ImageButton
+            android:id="@+id/download_file_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/circle_ripple"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_download"
+            app:tint="?attr/blackLightWhiteNightColor" />
+
+
+        <ImageButton
+            android:id="@+id/delete_file_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/circle_background"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="@drawable/circle_ripple"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:visibility="@{isEditMode? View.VISIBLE: View.GONE}"
+            app:srcCompat="@drawable/ic_trash"
+            app:tint="?attr/blackLightWhiteNightColor" />
+    </LinearLayout>
+</layout>

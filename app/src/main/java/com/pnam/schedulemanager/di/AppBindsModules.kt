@@ -1,8 +1,10 @@
 package com.pnam.schedulemanager.di
 
 import com.pnam.schedulemanager.model.database.local.CurrentUser
+import com.pnam.schedulemanager.model.database.local.DownloadFile
 import com.pnam.schedulemanager.model.database.local.LocalReference
 import com.pnam.schedulemanager.model.database.local.impl.DataStoreCurrentUserImpl
+import com.pnam.schedulemanager.model.database.local.impl.DefaultDownloadFileImpl
 import com.pnam.schedulemanager.model.database.network.NetworkConnectionInterceptor
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
 import com.pnam.schedulemanager.model.database.network.UsersNetwork
@@ -41,6 +43,9 @@ abstract class AppBindsModules {
 
     @Binds
     abstract fun getUserNetwork(network: UsersRetrofitServiceImpl): UsersNetwork
+
+    @Binds
+    abstract fun getDownloadFile(downloadFile: DefaultDownloadFileImpl): DownloadFile
 
     //repository
     @Binds

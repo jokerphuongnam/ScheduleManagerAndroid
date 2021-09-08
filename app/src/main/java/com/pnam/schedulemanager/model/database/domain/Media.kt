@@ -19,11 +19,13 @@ import kotlinx.parcelize.Parcelize
         onUpdate = ForeignKey.CASCADE
     )]
 )
-open class Media(
-    @PrimaryKey @ColumnInfo(name = "media_id") open var mediaId: String = "",
-    @ColumnInfo(name = "create_at") open var createAt: Long = System.currentTimeMillis(),
-    @ColumnInfo(name = "create_by") open var createBy: String = "",
-    @ColumnInfo(name = "media_url") open var mediaUrl: String = ""
+data class Media(
+    @PrimaryKey @ColumnInfo(name = "media_id") var mediaId: String = "",
+    @ColumnInfo(name = "create_at") var createAt: Long = System.currentTimeMillis(),
+    @ColumnInfo(name = "create_by") var createBy: String = "",
+    @ColumnInfo(name = "media_url") var mediaUrl: String = "",
+    @ColumnInfo(name = "media_name") var mediaName: String = "",
+    @ColumnInfo(name = "mime_type") var mimeType: String = ""
 ) : Parcelable {
     @ColumnInfo(name = "schedule_id")
     var scheduleId: String = ""
@@ -34,6 +36,7 @@ open class Media(
     enum class MediaType(val rawValue: String) {
         IMAGE(RetrofitUtils.IMAGES),
         AUDIO(RetrofitUtils.AUDIOS),
-        VIDEO(RetrofitUtils.VIDEOS);
+        VIDEO(RetrofitUtils.VIDEOS),
+        APPLICATION(RetrofitUtils.APPLICATIONS);
     }
 }

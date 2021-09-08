@@ -1,17 +1,17 @@
 package com.pnam.schedulemanager.model.repository.impl
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.pnam.schedulemanager.model.database.domain.Media
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
+import com.pnam.schedulemanager.model.database.local.DownloadFile
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
 import com.pnam.schedulemanager.model.repository.SchedulesRepository
-import com.pnam.schedulemanager.throwable.BadRequest
-import com.pnam.schedulemanager.throwable.CannotSaveException
-import com.pnam.schedulemanager.throwable.NotFoundException
-import com.pnam.schedulemanager.throwable.UnknownException
+import com.pnam.schedulemanager.throwable.*
 import com.pnam.schedulemanager.utils.RetrofitUtils.BAD_REQUEST
+import com.pnam.schedulemanager.utils.RetrofitUtils.CONFLICT
 import com.pnam.schedulemanager.utils.RetrofitUtils.INTERNAL_SERVER_ERROR
 import com.pnam.schedulemanager.utils.RetrofitUtils.NOT_FOUND
 import com.pnam.schedulemanager.utils.RetrofitUtils.SUCCESS
@@ -21,7 +21,8 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class DefaultSchedulesRepositoryImpl @Inject constructor(
     override val local: SchedulesLocal,
-    override val network: SchedulesNetwork
+    override val network: SchedulesNetwork,
+    override val download: DownloadFile
 ) : SchedulesRepository {
 
     override suspend fun insertSchedule(
@@ -131,6 +132,10 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
                         video.scheduleId = receiveSchedule.scheduleId
                         video.mediaType = Media.MediaType.AUDIO
                     }
+                    receiveSchedule.applications.forEach { application ->
+                        application.scheduleId = receiveSchedule.scheduleId
+                        application.mediaType = Media.MediaType.APPLICATION
+                    }
                     // tasks
                     local.clearTasksBySchedule(receiveSchedule.scheduleId)
                     local.insertTasks(*receiveSchedule.tasks.toTypedArray())
@@ -141,7 +146,7 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
 
                     // multi media
                     local.clearMultiMediaBySchedule(receiveSchedule.scheduleId)
-                    local.insertMultiMedia(*(receiveSchedule.images + receiveSchedule.videos + receiveSchedule.audios).toTypedArray())
+                    local.insertMultiMedia(*(receiveSchedule.images + receiveSchedule.videos + receiveSchedule.audios + receiveSchedule.applications).toTypedArray())
 
                     local.insertSchedules(receiveSchedule)
                     return receiveSchedule
@@ -244,7 +249,11 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<Bitmap>) {
+    override suspend fun addMultiMedia(
+        scheduleId: String,
+        userId: String,
+        multiMedia: List<Bitmap>
+    ) {
         val response = network.addMultiMedia(scheduleId, userId, multiMedia)
         when {
             response.code() == INTERNAL_SERVER_ERROR -> {
@@ -259,6 +268,30 @@ class DefaultSchedulesRepositoryImpl @Inject constructor(
                 throw UnknownException()
             }
         }
+    }
+
+    override suspend fun addFiles(scheduleId: String, userId: String, uris: List<Uri>) {
+        val response = network.addFiles(scheduleId, userId, uris)
+        when {
+            response.code() == INTERNAL_SERVER_ERROR -> {
+                throw CannotSaveException()
+            }
+            response.code() == BAD_REQUEST -> {
+                throw BadRequest()
+            }
+            response.code() == CONFLICT -> {
+                throw Conflict()
+            }
+            response.code().equals(SUCCESS) -> {
+            }
+            else -> {
+                throw UnknownException()
+            }
+        }
+    }
+
+    override suspend fun downloadFile(media: Media) {
+        download.downloadFile(media)
     }
 
     override suspend fun deleteMedia(mediaId: String) {

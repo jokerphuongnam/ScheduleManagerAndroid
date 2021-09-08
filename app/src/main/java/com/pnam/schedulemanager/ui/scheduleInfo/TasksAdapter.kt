@@ -50,7 +50,7 @@ class TasksAdapter(
                 isFinish.setOnClickListener {
                     toggleCallBack(isFinish.isChecked, task)
                 }
-                if (isFinish.isChecked) {
+                if (task.finishBy != null) {
                     describe.paintFlags = describe.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 } else {
                     describe.paintFlags = describe.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()

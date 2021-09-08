@@ -1,6 +1,7 @@
 package com.pnam.schedulemanager.model.database.network
 
 import android.graphics.Bitmap
+import android.net.Uri
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import retrofit2.Response
@@ -50,6 +51,8 @@ interface SchedulesNetwork {
         userId: String,
         multiMedia: List<Bitmap>
     ): Response<Unit>
+
+    suspend fun addFiles(scheduleId: String, userId: String, uris: List<Uri>): Response<Unit>
 
     suspend fun deleteMedia(mediaId: String): Response<Unit>
 

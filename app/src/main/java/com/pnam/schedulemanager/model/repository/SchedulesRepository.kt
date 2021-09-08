@@ -1,8 +1,11 @@
 package com.pnam.schedulemanager.model.repository
 
 import android.graphics.Bitmap
+import android.net.Uri
+import com.pnam.schedulemanager.model.database.domain.Media
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
+import com.pnam.schedulemanager.model.database.local.DownloadFile
 import com.pnam.schedulemanager.model.database.local.SchedulesLocal
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
 import javax.inject.Singleton
@@ -11,6 +14,7 @@ import javax.inject.Singleton
 interface SchedulesRepository {
     val local: SchedulesLocal
     val network: SchedulesNetwork
+    val download: DownloadFile
 
     suspend fun insertSchedule(schedule: Schedule): Schedule
 
@@ -35,6 +39,10 @@ interface SchedulesRepository {
     suspend fun leaveGroup(scheduleId: String, userId: String)
 
     suspend fun addMultiMedia(scheduleId: String, userId: String, multiMedia: List<Bitmap>)
+
+    suspend fun addFiles(scheduleId: String, userId: String, uris: List<Uri>)
+
+    suspend fun downloadFile(media: Media)
 
     suspend fun deleteMedia(mediaId: String)
 

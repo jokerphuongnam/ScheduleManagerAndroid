@@ -18,13 +18,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:animateLayoutChanges="true">
 
             <CheckBox
                 android:id="@+id/is_finish"
@@ -51,17 +53,17 @@
                 android:id="@+id/edit_task"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:layout_marginEnd="8dp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/circle_background"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@drawable/circle_ripple"
                 android:padding="10dp"
-                android:layout_margin="8dp"
                 android:scaleType="fitCenter"
                 android:visibility="@{isEditMode? View.VISIBLE: View.GONE}"
-                app:srcCompat="@drawable/ic_edit"
-                android:layout_marginEnd="8dp"/>
+                app:srcCompat="@drawable/ic_edit" />
 
             <ImageButton
                 android:id="@+id/delete_task_btn"
@@ -90,7 +92,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="?attr/blackLightWhiteNightColor"
                 android:text="@string/finish_by" />
 
             <ImageView
@@ -103,16 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:buttonTint="?attr/blackLightWhiteNightColor"
-                android:text="@{task.finishByMember != null ? task.finishByMember.firstName: ``}"
-                android:textColor="?attr/blackLightWhiteNightColor" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:buttonTint="?attr/blackLightWhiteNightColor"
-                android:text="@{task.finishByMember != null ? task.finishByMember.lastName: ``}"
+                android:text="@{task.finishByMember != null ? task.finishByMember.fullName: ``}"
                 android:textColor="?attr/blackLightWhiteNightColor" />
         </LinearLayout>
     </LinearLayout>

@@ -1,13 +1,18 @@
 package com.pnam.schedulemanager.model.database.network.impl
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import com.pnam.schedulemanager.model.database.domain.Schedule
 import com.pnam.schedulemanager.model.database.domain.Task
 import com.pnam.schedulemanager.model.database.network.SchedulesNetwork
+import com.pnam.schedulemanager.utils.FileUtil
 import com.pnam.schedulemanager.utils.toMultipartBodies
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,7 +20,8 @@ import javax.inject.Inject
 
 
 class SchedulesRetrofitServiceImpl @Inject constructor(
-    private val service: Service
+    private val service: Service,
+    @ApplicationContext private val context: Context
 ) : SchedulesNetwork {
     override suspend fun insertSchedule(
         schedule: Schedule
@@ -103,6 +109,25 @@ class SchedulesRetrofitServiceImpl @Inject constructor(
             scheduleId.toRequestBody("text/plain".toMediaTypeOrNull()),
             userId.toRequestBody("text/plain".toMediaTypeOrNull()),
             multiMedia.toMultipartBodies("multimedia")
+        )
+    }
+
+    override suspend fun addFiles(
+        scheduleId: String,
+        userId: String,
+        uris: List<Uri>
+    ): Response<Unit> {
+        return service.addMultiMedia(
+            scheduleId.toRequestBody("text/plain".toMediaTypeOrNull()),
+            userId.toRequestBody("text/plain".toMediaTypeOrNull()),
+            uris.map { uri ->
+                val file = FileUtil.from(context, uri)
+                MultipartBody.Part.createFormData(
+                    "multimedia",
+                    file.name,
+                    file.asRequestBody(FileUtil.getMimeType(context, uri).toMediaTypeOrNull())
+                )
+            }
         )
     }
 

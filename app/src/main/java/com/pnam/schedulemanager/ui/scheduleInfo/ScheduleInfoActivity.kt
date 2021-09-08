@@ -33,27 +33,26 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleInfoViewModel>(
     R.layout.activity_schedule_info
 ) {
-    private val imageChoose: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                result.data?.data?.let { uri ->
-                    MediaStore.Images.Media.getBitmap(contentResolver, uri).let { bitmap ->
-                        viewModel.insertMedia(bitmap)
-                    }
-                }
-            }
-        }
-
     private val takePhotoFromCamera: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 (result.data?.extras?.get("data") as Bitmap).apply {
                     viewModel.insertMedia(this)
+                }
+            }
+        }
+
+    private val fileChoose: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { uri ->
+                    viewModel.insertFile(uri)
                 }
             }
         }
@@ -84,6 +83,14 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
         }
     }
 
+    private val filesAdapter: FilesAdapter by lazy {
+        FilesAdapter({ file ->
+            viewModel.deleteMedia(file.mediaId)
+        }) { file ->
+            viewModel.downloadFile(file)
+        }
+    }
+
     private fun recyclerViewSetUp() {
         binding.apply {
             tasks.apply {
@@ -107,6 +114,14 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 layoutManager = LinearLayoutManager(
                     this@ScheduleInfoActivity,
                     RecyclerView.HORIZONTAL,
+                    false
+                )
+            }
+            files.apply {
+                adapter = filesAdapter
+                layoutManager = LinearLayoutManager(
+                    this@ScheduleInfoActivity,
+                    RecyclerView.VERTICAL,
                     false
                 )
             }
@@ -162,6 +177,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     ).toMutableList()
                 )
                 imagesAdapter.submitList(schedule.images.toMutableList())
+                filesAdapter.submitList(schedule.applications.toMutableList())
                 setActionBarAttr("${getString(R.string.edit_schedule)} ${schedule.title}")
                 colorsAdapter.selectedColor = ColorsAdapter.ColorElement.values().first {
                     it.rawValue == schedule.color
@@ -172,6 +188,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     binding.cancel.visibility = View.VISIBLE
                 }
                 tasksInfoAdapter.notifyDataSetChanged()
+                filesAdapter.notifyDataSetChanged()
                 val scheduleAlarm = schedule.scheduleTime.toCalendar
                 scheduleAlarm[Calendar.SECOND] = 0
                 scheduleAlarm[Calendar.MILLISECOND] = 0
@@ -193,6 +210,19 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     }
                 }
             }
+            downloadMedia.observe { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        showToast(String.format(getString(R.string.start_download), resource.data))
+                    }
+                    is Resource.Error -> {
+                        showToast(R.string.error_download)
+                    }
+                }
+            }
             toggleTaskLiveData.observe {
                 tasksInfoAdapter.submitList(
                     viewModel.newSchedule.value?.tasks?.toMutableList() ?: emptyList()
@@ -208,6 +238,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     )
                 }
                 tasksInfoAdapter.isEditMode = isEditMode
+                filesAdapter.isEditMode = isEditMode
                 binding.isEditMode = isEditMode
             }
         }
@@ -242,7 +273,7 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                 viewModel.isEditModeLiveData.value = false
                 when (it.itemId) {
                     R.id.image_choose -> {
-                        imageChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                        fileChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                             type = "image/*"
                             addCategory(Intent.CATEGORY_OPENABLE)
                         })
@@ -250,6 +281,13 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                     }
                     R.id.take_photo -> {
                         takePhotoFromCamera.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+                        true
+                    }
+                    R.id.take_file -> {
+                        fileChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                            type = "application/*"
+                            addCategory(Intent.CATEGORY_OPENABLE)
+                        })
                         true
                     }
                     else -> {
@@ -266,6 +304,12 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
                         }
                     })
                 }.show(supportFragmentManager, InputTaskDialog::class.simpleName)
+            }
+            addFile.setOnClickListener {
+                fileChoose.launch(Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    type = "application/*"
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                })
             }
             cancel.setOnClickListener {
                 viewModel.newSchedule.value?.let { s ->
@@ -326,10 +370,10 @@ class ScheduleInfoActivity : BaseActivity<ActivityScheduleInfoBinding, ScheduleI
     }
 
     override fun createUI() {
+        recyclerViewSetUp()
         setupViewModel()
         setupBinding()
         noInternetError()
-        recyclerViewSetUp()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -9,12 +9,13 @@ object RetrofitUtils {
     const val CONFLICT: Int = 409
     const val INTERNAL_SERVER_ERROR: Int = 500
 
-    fun getMediaUrl(imageName: String): String {
-        return "${BASE_URL}media/$imageName"
+    fun getMediaUrl(mediaName: String): String {
+        return "${BASE_URL}media/$mediaName"
     }
 
     const val IMAGES: String = "images"
     const val AUDIOS: String = "audios"
     const val VIDEOS: String = "videos"
+    const val APPLICATIONS: String = "applications"
     const val AVATAR: String = "avatar"
 }

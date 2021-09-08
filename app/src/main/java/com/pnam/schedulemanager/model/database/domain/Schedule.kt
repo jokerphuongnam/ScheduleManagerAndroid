@@ -55,6 +55,10 @@ data class Schedule(
     @Ignore
     var videos: List<Media> = mutableListOf()
 
+    @IgnoredOnParcel
+    @Ignore
+    var applications: List<Media> = mutableListOf()
+
     val scheduleTimeCalendar: Calendar
         get() {
             val calendar: Calendar = Calendar.getInstance()
